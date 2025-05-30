@@ -76,17 +76,28 @@ export const blogType = defineType({
     }),
     defineField({
       name: 'category',
-      type: 'string',
-      title: 'Category',
-      options: {
-        list: [
-          {title: 'Alle Artikel anzeigen', value: 'Alle Artikel anzeigen'},
-          {title: 'Blog Kategorie', value: 'Blog Kategorie'},
-          {title: 'Weitere Blog Kategorie', value: 'Weitere Blog Kategorie'},
-          {title: 'Noch eine Kategorie', value: 'Noch eine Kategorie'},
-        ],
-      },
+      type: 'array',
+      title: 'Categories',
+      of: [
+        {
+          type: 'reference',
+          to: {type: 'category'},
+        },
+      ],
     }),
+    // defineField({
+    //   name: 'category',
+    //   type: 'string',
+    //   title: 'Category',
+    //   options: {
+    //     list: [
+    //       {title: 'Alle Artikel anzeigen', value: 'Alle Artikel anzeigen'},
+    //       {title: 'Blog Kategorie', value: 'Blog Kategorie'},
+    //       {title: 'Weitere Blog Kategorie', value: 'Weitere Blog Kategorie'},
+    //       {title: 'Noch eine Kategorie', value: 'Noch eine Kategorie'},
+    //     ],
+    //   },
+    // }),
     defineField({
       name: 'publishedAt',
       type: 'datetime',
@@ -98,63 +109,7 @@ export const blogType = defineType({
       title: 'Body',
     }),
 
-    defineField({
-      name: 'heroSection',
-      type: 'object',
-      title: 'Hero Section',
-      fields: [
-        defineField({
-          name: 'title',
-          type: 'string',
-          title: 'Title',
-        }),
-      ],
-    }),
-
     // Partner Section
-    defineField({
-      name: 'partnerSection',
-      type: 'object',
-      title: 'Partner Section',
-      fields: [
-        defineField({
-          name: 'title',
-          type: 'string',
-          title: 'Title',
-          options: {
-            list: [
-              {title: 'Ad', value: 'Ad'},
-              {title: 'Anzeige', value: 'Anzeige'},
-            ],
-          },
-        }),
-        defineField({
-          name: 'images',
-          type: 'array',
-          title: 'Partner Images',
-          of: [
-            {
-              type: 'object',
-              fields: [
-                defineField({
-                  name: 'image',
-                  type: 'image',
-                  title: 'Image',
-                  options: {hotspot: true},
-                  fields: [
-                    defineField({
-                      name: 'alt',
-                      type: 'string',
-                      title: 'Alternative Text',
-                    }),
-                  ],
-                }),
-              ],
-            },
-          ],
-        }),
-      ],
-    }),
 
     //Article Section
     defineField({
@@ -173,62 +128,8 @@ export const blogType = defineType({
           title: 'Articles',
           of: [
             {
-              type: 'object',
-              fields: [
-                defineField({
-                  name: 'image',
-                  type: 'image',
-                  title: 'Image',
-                  options: {hotspot: true},
-                  fields: [
-                    defineField({
-                      name: 'alt',
-                      type: 'string',
-                      title: 'Alternative Text',
-                    }),
-                  ],
-                }),
-                defineField({
-                  name: 'category',
-                  type: 'string',
-                  title: 'Category',
-                  options: {
-                    list: [
-                      {title: 'Alle Artikel anzeigen', value: 'Alle Artikel anzeigen'},
-                      {title: 'Blog Kategorie', value: 'Blog Kategorie'},
-                      {title: 'Weitere Blog Kategorie', value: 'Weitere Blog Kategorie'},
-                      {title: 'Noch eine Kategorie', value: 'Noch eine Kategorie'},
-                    ],
-                  },
-                }),
-                defineField({
-                  name: 'title',
-                  type: 'string',
-                  title: 'Title',
-                }),
-                defineField({
-                  name: 'description',
-                  type: 'text',
-                  title: 'Description',
-                }),
-                defineField({
-                  name: 'ctaButton',
-                  type: 'object',
-                  title: 'CTA Button',
-                  fields: [
-                    defineField({
-                      name: 'text',
-                      type: 'string',
-                      title: 'Button Text',
-                    }),
-                    defineField({
-                      name: 'link',
-                      type: 'string',
-                      title: 'Button Link',
-                    }),
-                  ],
-                }),
-              ],
+              type: 'reference',
+              to: {type: 'blog'},
             },
           ],
         }),

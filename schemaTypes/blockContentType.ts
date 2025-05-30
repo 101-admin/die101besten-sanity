@@ -1,4 +1,4 @@
-import {defineType, defineArrayMember} from 'sanity'
+import {defineType, defineArrayMember, defineField} from 'sanity'
 import {ImageIcon} from '@sanity/icons'
 import {HighlightIcon} from '@sanity/icons'
 import {ColoredTextDecorator} from '../components/ColoredTextDecorator'
@@ -121,6 +121,138 @@ export const blockContentType = defineType({
 
     defineArrayMember({
       type: 'object',
+      name: 'anzeigeImage',
+      title: 'Anzeige Image',
+      fields: [
+        defineField({
+          name: 'title',
+          type: 'string',
+          title: 'Title',
+          options: {
+            list: [
+              {title: 'Ad', value: 'Ad'},
+              {title: 'Anzeige', value: 'Anzeige'},
+            ],
+          },
+        }),
+        defineField({
+          name: 'images',
+          type: 'array',
+          title: 'Anzeige Images',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                defineField({
+                  name: 'image',
+                  type: 'image',
+                  title: 'Image',
+                  options: {hotspot: true},
+                  fields: [
+                    defineField({
+                      name: 'alt',
+                      type: 'string',
+                      title: 'Alternative Text',
+                    }),
+                    defineField({
+                      name: 'link',
+                      type: 'string',
+                      title: 'Link',
+                    }),
+                    defineField({
+                      name: 'linkText',
+                      type: 'string',
+                      title: 'Link Text',
+                    }),
+                  ],
+                }),
+              ],
+            },
+          ],
+        }),
+      ],
+    }),
+
+    defineArrayMember({
+      type: 'object',
+      name: 'contentSection',
+      title: 'Content Section',
+      fields: [
+        defineField({
+          name: 'content',
+          type: 'array',
+          title: 'Content',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                defineField({
+                  name: 'image',
+                  type: 'image',
+                  title: 'Image',
+                  options: {
+                    hotspot: true,
+                  },
+                  fields: [
+                    {
+                      name: 'alt',
+                      type: 'string',
+                      title: 'Alternative Text',
+                    },
+                  ],
+                }),
+                defineField({
+                  name: 'description',
+                  type: 'blockContent',
+                  title: 'Description',
+                }),
+                defineField({
+                  name: 'imagePosition',
+                  type: 'string',
+                  title: 'Image Position',
+                  options: {
+                    list: [
+                      {title: 'Left', value: 'left'},
+                      {title: 'Right', value: 'right'},
+                    ],
+                  },
+                }),
+              ],
+            },
+          ],
+        }),
+      ],
+    }),
+    defineArrayMember({
+      type: 'object',
+      name: 'blogDescriptionGrid',
+      title: 'Blog Description Grid',
+      fields: [
+        {
+          name: 'descriptions',
+          type: 'array',
+          title: 'Descriptions',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                defineField({
+                  name: 'description',
+                  type: 'blockContent',
+                  title: 'Description',
+                }),
+              ],
+            },
+          ],
+          options: {
+            layout: 'grid',
+          },
+        },
+      ],
+    }),
+
+    defineArrayMember({
+      type: 'object',
       name: 'descriptionGrid',
       title: 'Description Grid',
       fields: [
@@ -139,6 +271,7 @@ export const blockContentType = defineType({
           },
         },
       ],
+
       preview: {
         select: {
           descriptions: 'descriptions',

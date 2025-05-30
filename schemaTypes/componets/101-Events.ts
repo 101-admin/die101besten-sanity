@@ -30,34 +30,8 @@ export default defineType({
       title: 'Upcoming Events',
       of: [
         {
-          type: 'object',
-          fields: [
-            {
-              name: 'image',
-              type: 'image',
-              title: 'Event Image',
-            },
-            {
-              name: 'date',
-              type: 'date',
-              title: 'Event Date',
-            },
-            {
-              name: 'name',
-              type: 'string',
-              title: 'Event Name',
-            },
-            {
-              name: 'description',
-              type: 'text',
-              title: 'Event Teaser Text',
-            },
-            {
-              name: 'link',
-              type: 'string',
-              title: 'Event Link',
-            },
-          ],
+          type: 'reference',
+          to: [{type: 'event'}],
         },
       ],
     }),
@@ -92,29 +66,8 @@ export default defineType({
       title: 'Past Events',
       of: [
         {
-          type: 'object',
-          fields: [
-            {
-              name: 'image',
-              type: 'image',
-              title: 'Event Image',
-            },
-            {
-              name: 'name',
-              type: 'string',
-              title: 'Event Name',
-            },
-            {
-              name: 'description',
-              type: 'text',
-              title: 'Event Teaser Text',
-            },
-            {
-              name: 'link',
-              type: 'string',
-              title: 'Event Link',
-            },
-          ],
+          type: 'reference',
+          to: [{type: 'event'}],
         },
       ],
     }),

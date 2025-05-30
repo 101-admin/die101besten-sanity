@@ -19,6 +19,11 @@ export default defineType({
       initialValue: 'Erfahren Sie es als Erster!',
     }),
     defineField({
+      name: 'id',
+      type: 'string',
+      title: 'Section ID',
+    }),
+    defineField({
       name: 'emailLabel',
       type: 'string',
       title: 'Email Input Label',

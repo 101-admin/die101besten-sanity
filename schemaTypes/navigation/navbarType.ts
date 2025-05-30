@@ -102,6 +102,11 @@ export const navbarType = defineType({
                                   title: 'URL',
                                   validation: (rule) => rule.required(),
                                 }),
+                                defineField({
+                                  name: 'id',
+                                  type: 'string',
+                                  title: 'Section ID',
+                                }),
                               ],
                             },
                           ],

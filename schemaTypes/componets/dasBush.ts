@@ -17,7 +17,11 @@ export default defineType({
       type: 'string',
       readOnly: true,
     }),
-
+    defineField({
+      name: 'id',
+      type: 'string',
+      title: 'Section ID',
+    }),
     defineField({
       name: 'imagePosition',
       type: 'string',

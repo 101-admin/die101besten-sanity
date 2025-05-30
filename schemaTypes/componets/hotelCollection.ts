@@ -12,14 +12,21 @@ export default defineType({
     }),
 
     defineField({
-      name: 'collectionVariant',
+      name: 'id',
+      type: 'string',
+      title: 'Section ID',
+    }),
+
+    defineField({
+      name: 'variant',
       type: 'string',
       title: 'Collection Variant',
       description: 'Variant for this collection (e.g., "Featured", "Luxury", "New")',
+      initialValue: 'classic',
       options: {
         list: [
-          {title: 'Special Edition', value: 'special-edition'},
-          {title: 'All Hotels', value: 'all-hotels'},
+          {title: 'Special Edition Hotels', value: 'special'},
+          {title: 'Classic Hotels', value: 'classic'},
         ],
       },
     }),

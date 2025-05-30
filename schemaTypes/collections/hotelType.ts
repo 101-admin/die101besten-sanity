@@ -24,11 +24,135 @@ export const hotelType = defineType({
         ],
       },
     }),
+
+    defineField({
+      name: 'variant',
+      type: 'string',
+      title: 'Hotel Variant',
+      initialValue: 'classic',
+      options: {
+        list: [
+          {title: 'Special', value: 'special'},
+          {title: 'Classic', value: 'classic'},
+        ],
+      },
+    }),
+
+    defineField({
+      name: 'hotelType',
+      type: 'string',
+      title: 'Hotel Package',
+      initialValue: 'classic',
+      options: {
+        list: [
+          {title: 'Classic', value: 'classic'},
+          {title: 'Exclusive', value: 'exclusive'},
+          {title: 'Grand', value: 'grand'},
+          {title: 'Premium', value: 'premium'},
+        ],
+      },
+    }),
+
+    defineField({
+      name: 'segment',
+      type: 'string',
+      title: 'Hotel Segment',
+      options: {
+        list: [
+          {title: 'Leisure', value: 'leisure'},
+          {title: 'Business', value: 'business'},
+        ],
+        layout: 'dropdown',
+      },
+    }),
+    defineField({
+      name: 'category',
+      type: 'reference',
+      title: 'Hotel Category',
+      description: 'Select or create a hotel category',
+      to: [{type: 'hotelCategory'}],
+      options: {
+        filter: ({document}) => ({
+          filter: 'language == $language && $edition in edition',
+          params: {
+            language: document?.language,
+            edition: document?.edition,
+          },
+        }),
+      },
+      validation: (Rule) => Rule.required().error('A category must be selected'),
+    }),
+
+    defineField({
+      name: 'isPackageBooked',
+      type: 'boolean',
+      title: 'Package Booking',
+      initialValue: false,
+      description: 'Enable package booking',
+    }),
+
     defineField({
       name: 'name',
       type: 'string',
       title: 'Hotel Name',
       description: 'Name of the hotel',
+    }),
+    defineField({
+      name: 'slug',
+      type: 'slug',
+      title: 'Slug',
+      description: 'Eindeutige Bezeichnung für das Hotel, bspw. in der Website Url.',
+      options: {
+        source: 'name',
+        slugify: (input) => {
+          const umlautMap: {[key: string]: string} = {
+            ä: 'ae',
+            ö: 'oe',
+            ü: 'ue',
+            ß: 'ss',
+            æ: 'ae',
+            ø: 'oe',
+            é: 'e',
+            è: 'e',
+            ê: 'e',
+            ë: 'e',
+            á: 'a',
+            à: 'a',
+            â: 'a',
+            ã: 'a',
+            ñ: 'n',
+            ó: 'o',
+            ò: 'o',
+            ô: 'o',
+            õ: 'o',
+            ú: 'u',
+            ù: 'u',
+            û: 'u',
+            ý: 'y',
+            ÿ: 'y',
+            Ä: 'ae',
+            Ö: 'oe',
+            Ü: 'ue',
+          }
+
+          return (
+            input
+              .toLowerCase()
+              // Replace umlauts and special characters
+              .replace(/[äöüßæøéèêëáàâãñóòôõúùûýÿÄÖÜ]/g, (char) => umlautMap[char] || char)
+              // Replace spaces with hyphens
+              .replace(/\s+/g, '-')
+              // Replace ampersand with 'and'
+              .replace(/&/g, 'and')
+              // Remove all other special characters
+              .replace(/[^a-z0-9-]/g, '')
+              // Remove multiple consecutive hyphens
+              .replace(/-+/g, '-')
+              // Remove leading and trailing hyphens
+              .replace(/^-+|-+$/g, '')
+          )
+        },
+      },
     }),
 
     defineField({
@@ -113,21 +237,6 @@ export const hotelType = defineType({
     }),
 
     defineField({
-      name: 'hotelType',
-      type: 'string',
-      title: 'Hotel Package',
-      initialValue: 'classic',
-      options: {
-        list: [
-          {title: 'Classic', value: 'classic'},
-          {title: 'Exclusive', value: 'exclusive'},
-          {title: 'Grand', value: 'grand'},
-          {title: 'Premium', value: 'premium'},
-        ],
-      },
-    }),
-
-    defineField({
       name: 'ranking',
       type: 'object',
       title: 'Hotel Ranking',
@@ -147,101 +256,13 @@ export const hotelType = defineType({
           description: 'Category for this ranking (e.g., "Featured", "Luxury", "New")',
           options: {
             list: [
-              {title: 'Featured', value: 'featured'},
               {title: 'Luxury', value: 'luxury'},
-              {title: 'New', value: 'new'},
-              {title: 'Popular', value: 'popular'},
               {title: "Editor's Choice", value: 'editors-choice'},
-              {title: 'New Hotel Openings', value: 'new-openings'},
+              {title: 'New Hotel Openings', value: 'new'},
             ],
           },
         }),
       ],
-    }),
-
-    defineField({
-      name: 'segment',
-      type: 'string',
-      title: 'Hotel Segment',
-      options: {
-        list: [
-          {title: 'Leisure', value: 'leisure'},
-          {title: 'Business', value: 'business'},
-        ],
-        layout: 'dropdown',
-      },
-    }),
-    defineField({
-      name: 'category',
-      type: 'string',
-      title: 'Hotel Category',
-      options: {
-        list: [
-          {title: 'Luxury City Palais', value: 'luxury-city-palais'},
-          {title: 'Luxury Culinary Hotels', value: 'luxury-culinary-hotels'},
-          {title: 'Luxury Design & Lifestyle Resorts', value: 'luxury-design-lifestyle-resorts'},
-          {title: 'Luxury Family Resorts', value: 'luxury-family-resorts'},
-          {title: 'Grand Hotels', value: 'grand-hotels'},
-          {title: 'Luxury Lake Side Resorts', value: 'luxury-lake-side-resorts'},
-          {title: 'Luxury Meeting & Event Hotels', value: 'luxury-meeting-event-hotels'},
-          {title: 'Luxury Spa & Health Resorts', value: 'luxury-spa-health-resorts'},
-          {title: 'Luxury Hideaways', value: 'luxury-hideaways'},
-          {title: 'Luxury Alpine Resorts', value: 'luxury-alpine-resorts'},
-          {title: 'Grand Resorts', value: 'grand-resorts'},
-          {
-            title: 'Luxury Hotels in Historical Architecture',
-            value: 'luxury-hotels-historical-architecture',
-          },
-          {title: 'Luxury City Hotels', value: 'luxury-city-hotels'},
-          {title: 'Luxury Golf Resorts', value: 'luxury-golf-resorts'},
-        ],
-        layout: 'dropdown',
-      },
-    }),
-    defineField({
-      name: 'city',
-      type: 'string',
-      title: 'City',
-      options: {
-        list: [
-          {title: 'Berlin', value: 'berlin'},
-          {title: 'Munich', value: 'munich'},
-          {title: 'Zurich', value: 'zurich'},
-          {title: 'Vienna', value: 'vienna'},
-          {title: 'Hamburg', value: 'hamburg'},
-        ],
-        layout: 'dropdown',
-      },
-    }),
-    defineField({
-      name: 'slug',
-      type: 'slug',
-      title: 'Slug',
-      description: 'Eindeutige Bezeichnung für das Hotel, bspw. in der Website Url.',
-      options: {
-        source: 'name',
-        slugify: (input) =>
-          input
-            .toLowerCase()
-            .replace(/\s+/g, '-')
-            .replace(/&/g, 'and')
-            .replace(/[\/\\#,+()$~%.'":*?<>{}]/g, ''),
-      },
-    }),
-    defineField({
-      name: 'tags',
-      type: 'array',
-      title: 'Tags',
-
-      of: [{type: 'string'}],
-      options: {
-        list: [
-          {title: 'International luxury partner', value: 'international luxury partner'},
-          {title: "Editor's choice", value: 'editors choice'},
-          {title: 'Best New Hotel Openings', value: 'best new hotel openings'},
-        ],
-        layout: 'grid',
-      },
     }),
 
     // Primary Hero Section - Show for Exclusive, Grand, Premium
@@ -336,23 +357,23 @@ export const hotelType = defineType({
             }),
           ],
         }),
-        defineField({
-          name: 'saveOrSplitButtons',
-          type: 'object',
-          title: 'Save or Split Buttons',
-          fields: [
-            defineField({
-              name: 'saveButton',
-              type: 'string',
-              title: 'Save Button Text',
-            }),
-            defineField({
-              name: 'splitButton',
-              type: 'string',
-              title: 'Split Button Text',
-            }),
-          ],
-        }),
+        // defineField({
+        //   name: 'saveOrSplitButtons',
+        //   type: 'object',
+        //   title: 'Save or Split Buttons',
+        //   fields: [
+        //     defineField({
+        //       name: 'saveButton',
+        //       type: 'string',
+        //       title: 'Save Button Text',
+        //     }),
+        //     defineField({
+        //       name: 'splitButton',
+        //       type: 'string',
+        //       title: 'Split Button Text',
+        //     }),
+        //   ],
+        // }),
         defineField({
           name: 'brandImages',
           type: 'array',
@@ -425,23 +446,23 @@ export const hotelType = defineType({
             }),
           ],
         }),
-        defineField({
-          name: 'saveOrSplitButtons',
-          type: 'object',
-          title: 'Save or Split Buttons',
-          fields: [
-            defineField({
-              name: 'saveButton',
-              type: 'string',
-              title: 'Save Button Text',
-            }),
-            defineField({
-              name: 'splitButton',
-              type: 'string',
-              title: 'Split Button Text',
-            }),
-          ],
-        }),
+        // defineField({
+        //   name: 'saveOrSplitButtons',
+        //   type: 'object',
+        //   title: 'Save or Split Buttons',
+        //   fields: [
+        //     defineField({
+        //       name: 'saveButton',
+        //       type: 'string',
+        //       title: 'Save Button Text',
+        //     }),
+        //     defineField({
+        //       name: 'splitButton',
+        //       type: 'string',
+        //       title: 'Split Button Text',
+        //     }),
+        //   ],
+        // }),
         defineField({
           name: 'brandImages',
           type: 'array',
@@ -692,11 +713,11 @@ export const hotelType = defineType({
           type: 'blockContent',
           title: 'Description',
         }),
-        defineField({
-          name: 'readMore',
-          type: 'string',
-          title: 'Read more button',
-        }),
+        // defineField({
+        //   name: 'readMore',
+        //   type: 'string',
+        //   title: 'Read more button',
+        // }),
       ],
     }),
 
@@ -754,11 +775,11 @@ export const hotelType = defineType({
           type: 'blockContent',
           title: 'Description',
         }),
-        defineField({
-          name: 'readMore',
-          type: 'string',
-          title: 'Read more button',
-        }),
+        // defineField({
+        //   name: 'readMore',
+        //   type: 'string',
+        //   title: 'Read more button',
+        // }),
       ],
     }),
 
@@ -1079,12 +1100,6 @@ export const hotelType = defineType({
           title: 'CTA Button',
           fields: [
             defineField({
-              name: 'text',
-              type: 'string',
-              title: 'Button Text',
-              initialValue: 'Visit Hotel Website',
-            }),
-            defineField({
               name: 'url',
               type: 'string',
               title: 'Button URL',
@@ -1130,7 +1145,7 @@ export const hotelType = defineType({
       validation: (rule) => rule.required().error('Dieses Feld muss ausgefüllt werden.'),
     }),
     defineField({
-      name: 'hotelAddress',
+      name: 'address',
       title: 'Hotel Adresse',
       type: 'reference',
       to: [{type: 'address'}],

@@ -45,7 +45,6 @@ export const addressType = defineType({
       type: 'string',
       title: 'City',
       fieldset: 'postalCodeAndCity',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'country',

@@ -28,6 +28,9 @@ export default defineType({
         {
           type: 'reference',
           to: [{type: 'hotel'}],
+          options: {
+            filter: 'variant == "special"', // Filter hotels by variant
+          },
         },
       ],
     }),

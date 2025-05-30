@@ -11,6 +11,11 @@ export default defineType({
       title: 'Title',
     }),
     defineField({
+      name: 'id',
+      type: 'string',
+      title: 'Section ID',
+    }),
+    defineField({
       name: 'language',
       type: 'string',
       readOnly: true,
@@ -42,6 +47,11 @@ export default defineType({
               name: 'name',
               type: 'string',
               title: 'Name',
+            }),
+            defineField({
+              name: 'link',
+              type: 'string',
+              title: 'Link',
             }),
           ],
         },

@@ -72,7 +72,7 @@ export const structure: StructureResolver = (S) => {
                         .title('Blogs')
                         .child(
                           S.documentTypeList('blog').filter(
-                            '_type == "blog" && edition == "deutschland" && language == "de"',
+                            '_type == "blog" && edition == "deutschland"',
                           ),
                         ),
                       S.listItem()
@@ -83,10 +83,21 @@ export const structure: StructureResolver = (S) => {
                           ),
                         ),
                       S.listItem()
-                        .title('Hotels')
+                        .title('Classic Hotels')
                         .child(
                           S.documentTypeList('hotel')
-                            .filter('_type == "hotel" && edition == "deutschland"')
+                            .filter(
+                              '_type == "hotel" && edition == "deutschland" && variant == "classic"',
+                            )
+                            .defaultOrdering([{field: 'ranking.position', direction: 'asc'}]),
+                        ),
+                      S.listItem()
+                        .title('Special Hotels')
+                        .child(
+                          S.documentTypeList('hotel')
+                            .filter(
+                              '_type == "hotel" && edition == "deutschland" && variant == "special"',
+                            )
                             .defaultOrdering([{field: 'ranking.position', direction: 'asc'}]),
                         ),
                     ]),

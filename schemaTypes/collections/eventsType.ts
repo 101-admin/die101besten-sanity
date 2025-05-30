@@ -34,12 +34,12 @@ export const eventsType = defineType({
     }),
     defineField({
       name: 'startDate',
-      type: 'datetime',
+      type: 'date',
       title: 'Start Datum/Zeit',
     }),
     defineField({
       name: 'endDate',
-      type: 'datetime',
+      type: 'date',
       title: 'End Datum/Zeit',
     }),
     defineField({
@@ -49,8 +49,13 @@ export const eventsType = defineType({
     }),
     defineField({
       name: 'description',
-      type: 'blockContent',
+      type: 'text',
       title: 'Beschreibung',
+    }),
+    defineField({
+      name: 'body',
+      type: 'blockContent',
+      title: 'Body',
     }),
     defineField({
       name: 'mainImage',

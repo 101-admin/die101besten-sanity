@@ -11,6 +11,11 @@ export default defineType({
       title: 'Hero Title',
     }),
     defineField({
+      name: 'id',
+      type: 'string',
+      title: 'Section ID',
+    }),
+    defineField({
       name: 'subtitle',
       type: 'text',
       title: 'Hero Subtitle',
