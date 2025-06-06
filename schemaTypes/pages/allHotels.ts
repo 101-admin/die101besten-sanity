@@ -50,6 +50,7 @@ export const allHotelsType = defineType({
             {type: 'dieInstagram'},
             {type: 'newsletter'},
             {type: 'hotelCollection'},
+            {type: 'imageSection'},
           ],
           options: {
             layout: 'grid',
