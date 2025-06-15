@@ -22,6 +22,11 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'internalName',
+      type: 'string',
+      title: 'Internal Name',
+    }),
+    defineField({
       name: 'images',
       type: 'array',
       title: 'Images',
@@ -52,4 +57,14 @@ export default defineType({
       ],
     }),
   ],
+  preview: {
+    select: {
+      internalName: 'internalName',
+    },
+    prepare({internalName}: {internalName: string}) {
+      return {
+        title: internalName,
+      }
+    },
+  },
 })

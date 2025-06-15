@@ -1,6 +1,7 @@
 module.exports.importConfig = {
-  language: 'en', // Set the language for all hotels
+  language: 'de', // Set the language for all hotels
   edition: 'deutschland', // Set the edition for all hotels
-  limit: 1, // Number of entries to import (set to null for all)
-  csvPath: '../101 hotels - laiba - DE.csv',
+  limit: null, // Number of entries to import (set to null for all)
+  csvPath: '../hotels-test.csv', // Path to the new CSV file
+  imagesPath: '../images', // Base path for images directory
 }

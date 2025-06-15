@@ -42,22 +42,17 @@ export const addressType = defineType({
     }),
     defineField({
       name: 'city',
-      type: 'string',
+      type: 'reference',
       title: 'City',
+      to: [{type: 'city'}],
       fieldset: 'postalCodeAndCity',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'country',
       title: 'Country',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Germany', value: 'de'},
-          {title: 'Austria', value: 'at'},
-          {title: 'Switzerland', value: 'ch'},
-          {title: 'Italy', value: 'it'},
-        ],
-      },
+      type: 'reference',
+      to: [{type: 'country'}],
       validation: (rule) => rule.required(),
     }),
   ],
@@ -66,7 +61,7 @@ export const addressType = defineType({
       street: 'street',
       streetNumber: 'streetNumber',
       postalCode: 'postalCode',
-      city: 'city',
+      cityRef: 'city',
       country: 'country',
     },
     prepare({
@@ -74,13 +69,13 @@ export const addressType = defineType({
       streetNumber,
       country,
       postalCode,
-      city,
+      cityRef,
     }: {
       street?: string
       streetNumber?: string
       country?: CountryCode
       postalCode?: string
-      city?: string
+      cityRef?: {label: string}
     }) {
       const PREPOSITIONS: Record<CountryCode, string> = {
         de: 'D-',
@@ -90,7 +85,7 @@ export const addressType = defineType({
       }
 
       return {
-        title: `${city} | ${country ? PREPOSITIONS[country] : ''}${postalCode}`,
+        title: `${cityRef?.label || ''} | ${country ? PREPOSITIONS[country] : ''}${postalCode}`,
         subtitle: `${street} ${streetNumber}`,
       }
     },
