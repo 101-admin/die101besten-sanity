@@ -45,6 +45,7 @@ export const partnersType = defineType({
             {type: 'werde101'},
             {type: 'dasBush'},
             {type: 'newsletter'},
+            {type: 'imageSection'},
           ],
           options: {
             layout: 'grid',

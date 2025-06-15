@@ -42,7 +42,7 @@ export default defineType({
       of: [
         {
           type: 'reference',
-          to: [{type: 'newsletter'}, {type: 'blogCollection'}, {type: 'blogPageTitle'}],
+          to: [{type: 'newsletter'}, {type: 'blogCollection'}, {type: 'blogPageTitle'}, {type: 'imageSection'}],
           options: {
             layout: 'grid',
           },

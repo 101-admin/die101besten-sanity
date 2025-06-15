@@ -60,6 +60,7 @@ export const aboutUsType = defineType({
             {type: 'principles'},
             {type: 'shapingFuture'},
             {type: 'hotelmomente'},
+            {type: 'imageSection'},
           ],
           options: {
             layout: 'grid',

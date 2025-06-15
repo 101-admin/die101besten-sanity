@@ -50,6 +50,7 @@ export const specialEditionHotels = defineType({
             {type: 'newsletter'},
             {type: 'hotelCollection'},
             {type: 'specialHotels'},
+            {type: 'imageSection'},
           ],
           options: {
             layout: 'grid',

@@ -55,6 +55,8 @@ import SpecialHotels from './componets/SpecialHotels'
 import {addressType} from './componets/addressType'
 import premiumPartner from './componets/premiumPartner'
 import categoryType from './categoryType'
+import imagesType from './collections/imageType'
+import achivementType from './collections/achivementType'
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     hotelType,
@@ -112,5 +114,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     SpecialHotels,
     addressType,
     categoryType,
+    imagesType,
+    achivementType
   ],
 }

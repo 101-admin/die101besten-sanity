@@ -159,11 +159,18 @@ export const structure: StructureResolver = (S) => {
                             '_type == "partners" && edition == "dach" && language == "de"',
                           ),
                         ),
-                      S.listItem()
+                        S.listItem()
                         .title('AllHotels')
                         .child(
                           S.documentTypeList('allHotels').filter(
-                            '_type == "allHotels" && edition == "dach" && language == "de"',
+                            '_type == "allHotels" && edition == "dach"',
+                          ),
+                        ),
+                      S.listItem()
+                        .title('Special Edition Hotels')
+                        .child(
+                          S.documentTypeList('specialEditionHotels').filter(
+                            '_type == "specialEditionHotels" && edition == "dach"',
                           ),
                         ),
                       S.listItem()
@@ -195,12 +202,23 @@ export const structure: StructureResolver = (S) => {
                             '_type == "event" && edition == "dach" && language == "de"',
                           ),
                         ),
-                      S.listItem()
-                        .title('Hotels')
+                        S.listItem()
+                        .title('Classic Hotels')
                         .child(
-                          S.documentTypeList('hotel').filter(
-                            '_type == "hotel" && edition == "dach" && language == "de"',
-                          ),
+                          S.documentTypeList('hotel')
+                            .filter(
+                              '_type == "hotel" && edition == "dach" && variant == "classic"',
+                            )
+                            .defaultOrdering([{field: 'ranking.position', direction: 'asc'}]),
+                        ),
+                      S.listItem()
+                        .title('Special Hotels')
+                        .child(
+                          S.documentTypeList('hotel')
+                            .filter(
+                              '_type == "hotel" && edition == "dach" && variant == "special"',
+                            )
+                            .defaultOrdering([{field: 'ranking.position', direction: 'asc'}]),
                         ),
                     ]),
                 ),
@@ -261,11 +279,18 @@ export const structure: StructureResolver = (S) => {
                             '_type == "partners" && edition == "schweiz" && language == "de"',
                           ),
                         ),
-                      S.listItem()
+                        S.listItem()
                         .title('AllHotels')
                         .child(
                           S.documentTypeList('allHotels').filter(
-                            '_type == "allHotels" && edition == "schweiz" && language == "de"',
+                            '_type == "allHotels" && edition == "schweiz"',
+                          ),
+                        ),
+                      S.listItem()
+                        .title('Special Edition Hotels')
+                        .child(
+                          S.documentTypeList('specialEditionHotels').filter(
+                            '_type == "specialEditionHotels" && edition == "schweiz"',
                           ),
                         ),
                       S.listItem()
@@ -297,12 +322,23 @@ export const structure: StructureResolver = (S) => {
                             '_type == "event" && edition == "schweiz" && language == "de"',
                           ),
                         ),
-                      S.listItem()
-                        .title('Hotels')
+                        S.listItem()
+                        .title('Classic Hotels')
                         .child(
-                          S.documentTypeList('hotel').filter(
-                            '_type == "hotel" && edition == "schweiz" && language == "de"',
-                          ),
+                          S.documentTypeList('hotel')
+                            .filter(
+                              '_type == "hotel" && edition == "schweiz" && variant == "classic"',
+                            )
+                            .defaultOrdering([{field: 'ranking.position', direction: 'asc'}]),
+                        ),
+                      S.listItem()
+                        .title('Special Hotels')
+                        .child(
+                          S.documentTypeList('hotel')
+                            .filter(
+                              '_type == "hotel" && edition == "schweiz" && variant == "special"',
+                            )
+                            .defaultOrdering([{field: 'ranking.position', direction: 'asc'}]),
                         ),
                     ]),
                 ),
