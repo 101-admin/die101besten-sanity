@@ -23,14 +23,55 @@ export const eventsType = defineType({
       title: 'Slug',
       options: {
         source: 'title',
-        slugify: (input) =>
-          input
-            .toLowerCase()
-            .replace(/\s+/g, '-')
-            .replace(/&/g, 'and')
-            .replace(/[\/\\#,+()$~%.'":*?<>{}]/g, ''),
+        slugify: (input) => {
+          const umlautMap: {[key: string]: string} = {
+            ä: 'ae',
+            ö: 'oe',
+            ü: 'ue',
+            ß: 'ss',
+            æ: 'ae',
+            ø: 'oe',
+            é: 'e',
+            è: 'e',
+            ê: 'e',
+            ë: 'e',
+            á: 'a',
+            à: 'a',
+            â: 'a',
+            ã: 'a',
+            ñ: 'n',
+            ó: 'o',
+            ò: 'o',
+            ô: 'o',
+            õ: 'o',
+            ú: 'u',
+            ù: 'u',
+            û: 'u',
+            ý: 'y',
+            ÿ: 'y',
+            Ä: 'ae',
+            Ö: 'oe',
+            Ü: 'ue',
+          }
+
+          return (
+            input
+              .toLowerCase()
+              // Replace umlauts and special characters
+              .replace(/[äöüßæøéèêëáàâãñóòôõúùûýÿÄÖÜ]/g, (char) => umlautMap[char] || char)
+              // Replace spaces with hyphens
+              .replace(/\s+/g, '-')
+              // Replace ampersand with 'and'
+              .replace(/&/g, 'and')
+              // Remove all other special characters
+              .replace(/[^a-z0-9-]/g, '')
+              // Remove multiple consecutive hyphens
+              .replace(/-+/g, '-')
+              // Remove leading and trailing hyphens
+              .replace(/^-+|-+$/g, '')
+          )
+        },
       },
-      validation: (rule) => rule.required().error('Ein Slug wird benötigt'),
     }),
     defineField({
       name: 'startDate',

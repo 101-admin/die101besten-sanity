@@ -26,11 +26,34 @@ export default defineType({
       title: 'Special Edition Hotels',
       of: [
         {
-          type: 'reference',
-          to: [{type: 'hotel'}],
-          options: {
-            filter: 'variant == "special"', // Filter hotels by variant
-          },
+          type: 'object',
+          fields: [
+            defineField({
+              name:"title",
+              type:"string",
+              title:"Title",
+            }),
+            defineField({
+              name:"image",
+              type:"image",
+              title:"Image",
+              options: {
+                hotspot: true,
+              },
+              fields: [
+                defineField({
+                  name: 'alt',
+                  type: 'string',
+                  title: 'Alternative Text',
+                }),
+              ],
+            }),
+            defineField({
+              name:"link",
+              type:"string",
+              title:"Link",
+            }),
+          ],
         },
       ],
     }),

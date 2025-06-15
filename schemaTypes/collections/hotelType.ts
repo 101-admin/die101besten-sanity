@@ -213,13 +213,13 @@ export const hotelType = defineType({
     defineField({
       name: 'ranking',
       type: 'object',
-      title: 'Ranking Einstellungen',
-      hidden: ({document}) => document?.variant === 'special',
+      title: 'Ranking Einstellungen', 
       fields: [
         defineField({
           name: 'position',
           type: 'number',
           title: 'Ranking Position',
+          hidden: ({document}) => document?.variant === 'special',
           description: 'Lower numbers appear first (e.g., 1 is highest rank)',
           validation: (Rule) =>
             Rule.custom((value, context) => {
@@ -234,6 +234,7 @@ export const hotelType = defineType({
           name: 'category',
           type: 'string',
           title: 'Special Edition Kategorie',
+          hidden: ({document}) => document?.variant === 'classic',
           options: {
             list: [
               {title: 'International Luxury Partners', value: 'luxury'},
@@ -919,48 +920,12 @@ export const hotelType = defineType({
      title:'Adds Section',
      fields:[
       defineField({
-        name: 'title',
-        type: 'string',
-        title: 'Title',
-        options: {
-          list: [
-            {title: 'Ad', value: 'Ad'},
-            {title: 'Anzeige', value: 'Anzeige'},
-          ],
-        },
-      }),
-      defineField({
-        name: 'images',
-        type: 'array',
-        title: 'Images',
-        of: [
-          {
-            type: 'object',
-            fields: [
-              defineField({
-                name: 'image',
-                type: 'image',
-                title: 'Image',
-                options: {hotspot: true},
-                fields: [
-                  defineField({
-                    name: 'alt',
-                    type: 'string',
-                    title: 'Alternative Text',
-                  }),
-                ],
-              }),
-              defineField({
-                name: 'link',
-                type: 'string',
-                title: 'Link',
-              }),
-            ],
-          },
-        ],
-      }),
+        name:"add",
+        type:"reference",
+        title:"Adds",
+        to:[{type:"imageSection"}]
+      })
      ]
-
     }),
 
 
