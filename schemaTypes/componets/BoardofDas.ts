@@ -13,6 +13,11 @@ export default defineType({
         'If you want to Hightlight the text Wrap it into # symbol like this: Section #Title#',
     }),
     defineField({
+      name: 'id',
+      type: 'string',
+      title: 'Section ID',
+    }),
+    defineField({
       name: 'language',
       type: 'string',
       readOnly: true,
@@ -79,6 +84,7 @@ export default defineType({
               name: 'hoverColor',
               type: 'string',
               title: 'Hover Color',
+              initialValue: 'black',
               options: {
                 list: [
                   {title: 'Black', value: 'black'},

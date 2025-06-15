@@ -1,7 +1,7 @@
 import {type SchemaTypeDefinition} from 'sanity'
 
 import {blockContentType} from './blockContentType'
-import {categoryType} from './categoryType'
+import {hotelCategoryType} from './hotelCategoryType'
 import {blogType} from './collections/blogType'
 import {authorType} from './authorType'
 import {hotelType} from './collections/hotelType'
@@ -54,6 +54,7 @@ import allBlogs from './pages/allBlogs'
 import SpecialHotels from './componets/SpecialHotels'
 import {addressType} from './componets/addressType'
 import premiumPartner from './componets/premiumPartner'
+import categoryType from './categoryType'
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     hotelType,
@@ -61,7 +62,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     editionType,
     rankingType,
     blockContentType,
-    categoryType,
+    hotelCategoryType,
     blogType,
     authorType,
     homeType,
@@ -110,5 +111,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     blogPageTitle,
     SpecialHotels,
     addressType,
+    categoryType,
   ],
 }

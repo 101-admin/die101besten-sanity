@@ -11,6 +11,11 @@ export default defineType({
       title: 'Heading',
     }),
     defineField({
+      name: 'id',
+      type: 'string',
+      title: 'Section ID',
+    }),
+    defineField({
       name: 'language',
       type: 'string',
       readOnly: true,

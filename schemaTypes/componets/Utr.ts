@@ -12,6 +12,11 @@ export default defineType({
       description: 'This main title is set under the hero section',
     }),
     defineField({
+      name: 'id',
+      type: 'string',
+      title: 'Section ID',
+    }),
+    defineField({
       name: 'language',
       type: 'string',
       readOnly: true,

@@ -55,7 +55,9 @@ export default defineType({
                     {
                       name: 'link',
                       type: 'string',
-                      title: 'Link',
+                      title: 'Slug',
+                      description:
+                        'give the root of the hotel page you want to link to for example if you want to link to /hotels/slugOfTheHotel',
                     },
                     {
                       name: 'linkText',

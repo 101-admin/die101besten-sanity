@@ -18,7 +18,39 @@ export default defineType({
     defineField({
       name: 'partners',
       type: 'array',
-      title: 'Partners',
+      title: 'Exclusive Partners',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'image',
+              type: 'image',
+              title: 'Image',
+              options: {
+                hotspot: true,
+              },
+              fields: [
+                defineField({
+                  name: 'alt',
+                  type: 'string',
+                  title: 'Alternative Text',
+                }),
+              ],
+            }),
+            defineField({
+              name: 'link',
+              type: 'string',
+              title: 'Link',
+            }),
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: 'premiumPartners',
+      type: 'array',
+      title: 'Premium Partners',
       of: [
         {
           type: 'object',
@@ -50,7 +82,7 @@ export default defineType({
     defineField({
       name: 'otherPartners',
       type: 'array',
-      title: 'other Partners',
+      title: 'Basic Partners',
       of: [
         {
           type: 'object',

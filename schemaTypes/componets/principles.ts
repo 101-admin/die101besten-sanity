@@ -12,7 +12,11 @@ export default defineType({
       description:
         'If you want to Hightlight the text Wrap it into # symbol like this: Section #Title#',
     }),
-
+    defineField({
+      name: 'id',
+      type: 'string',
+      title: 'Section ID',
+    }),
     defineField({
       name: 'subTitle',
       type: 'string',

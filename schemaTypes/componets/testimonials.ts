@@ -16,6 +16,11 @@ export default defineType({
       title: 'Title',
     }),
     defineField({
+      name: 'id',
+      type: 'string',
+      title: 'Section ID',
+    }),
+    defineField({
       name: 'slider',
       type: 'array',
       title: 'Slider',
