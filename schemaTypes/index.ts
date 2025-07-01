@@ -59,6 +59,10 @@ import imagesType from './collections/imageType'
 import achivementType from './collections/achivementType'
 import {cityType} from './componets/cityType'
 import countryType from './componets/countryType'
+import {allEventsType} from './pages/allEvents'
+import eventsHero from './componets/eventsHero'
+import eventsCollection from './componets/eventsCollection'
+import { eventsTags } from './collections/eventsTags'
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     hotelType,
@@ -120,5 +124,9 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     achivementType,
     cityType,
     countryType,
+    allEventsType,
+    eventsHero,
+    eventsCollection,
+    eventsTags,
     ],
 }

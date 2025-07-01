@@ -13,9 +13,22 @@ export const eventsType = defineType({
       readOnly: true,
     }),
     defineField({
+      name: 'edition',
+      type: 'string',
+      title: 'Edition',
+      options: {
+        list: [
+          {title: 'Deutschland', value: 'deutschland'},
+          {title: 'DACH', value: 'dach'},
+          {title: 'Schweiz', value: 'schweiz'},
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'title',
       type: 'string',
-      title: 'Titel',
+      title: 'Title',
     }),
     defineField({
       name: 'slug',
@@ -74,24 +87,29 @@ export const eventsType = defineType({
       },
     }),
     defineField({
+      name: 'eventHotel',
+      type: 'string',
+      title: 'Event Hotel',
+    }),
+    defineField({
       name: 'startDate',
       type: 'date',
-      title: 'Start Datum/Zeit',
+      title: 'Start Date',
     }),
     defineField({
       name: 'endDate',
       type: 'date',
-      title: 'End Datum/Zeit',
+      title: 'End Date',
     }),
     defineField({
       name: 'location',
       type: 'string',
-      title: 'Ort',
+      title: 'Location',
     }),
     defineField({
       name: 'description',
       type: 'text',
-      title: 'Beschreibung',
+      title: 'Description',
     }),
     defineField({
       name: 'body',
@@ -101,7 +119,7 @@ export const eventsType = defineType({
     defineField({
       name: 'mainImage',
       type: 'image',
-      title: 'Hauptbild',
+      title: 'Main Image',
       options: {
         hotspot: true,
       },
@@ -109,22 +127,97 @@ export const eventsType = defineType({
         defineField({
           name: 'alt',
           type: 'string',
-          title: 'Alternative text',
+          title: 'Alternative Text',
+        }),
+      ],
+    }),
+
+    defineField({
+      name: 'tags',
+      type: 'array',
+      title: 'Tags',
+      description: 'Tags of the event',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'eventsTags'}],
+        },
+      ],
+    }),
+
+    defineField({
+      name: 'youtubeVideo',
+      type: 'object',
+      title: 'Youtube Video',
+      description:
+        "Please add a Valid Emebed Youtube Url",
+      hidden: ({document}) => {
+        if (!document?.startDate) return true
+        const start = new Date(document.startDate as string).getTime()
+        if (isNaN(start)) return true
+        return Date.now() < start
+      },
+      fields: [
+        defineField({
+          name: 'url',
+          type: 'url',
+          title: 'Youtube Video URL',
         }),
       ],
     }),
     defineField({
-      name: 'edition',
-      type: 'string',
-      title: 'Edition',
-      options: {
-        list: [
-          {title: 'Deutschland', value: 'deutschland'},
-          {title: 'DACH', value: 'dach'},
-          {title: 'Schweiz', value: 'schweiz'},
-        ],
-      },
-      validation: (Rule) => Rule.required(),
+      name: 'allEvents',
+      type: 'object',
+      title: 'All Events',
+      fields: [
+        defineField({
+          name: 'title',
+          type: 'string',
+          title: 'Title',
+        }),
+        defineField({
+          name: 'events',
+          type: 'array',
+          title: 'Events',
+          of: [
+            {
+              type: 'reference',
+              to: [{type: 'event'}],
+            },
+          ],
+        }),
+        defineField({
+          name:"ctaButton",
+          type:"object",
+          title:"Button",
+          fields:[
+            defineField({
+              name:"text",
+              type:"string",
+              title:"Text",
+            }),
+            defineField({
+              name:"link",
+              type:"string",
+              title:"Link",
+            })
+          ]
+        })
+      ],
+    }),
+
+    defineField({
+      name: 'adds',
+      type: 'object',
+      title: 'Adds Section',
+      fields: [
+        defineField({
+          name: 'add',
+          type: 'reference',
+          title: 'Adds',
+          to: [{type: 'imageSection'}],
+        }),
+      ],
     }),
   ],
   preview: {
@@ -132,12 +225,13 @@ export const eventsType = defineType({
       title: 'title',
       date: 'startDate',
       media: 'mainImage',
+      edition: 'edition',
     },
     prepare(selection) {
-      const {date} = selection
+      const {date, edition} = selection
       return {
         ...selection,
-        subtitle: date ? new Date(date).toLocaleDateString() : 'Kein Datum',
+        subtitle: `${date ? new Date(date).toLocaleDateString() : 'Kein Datum'}-${edition ? `[${edition}]` : ''}`,
       }
     },
   },
