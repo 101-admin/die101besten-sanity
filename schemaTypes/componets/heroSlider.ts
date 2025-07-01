@@ -169,6 +169,16 @@ export default defineType({
                   name: 'sealImage',
                   type: 'image',
                   title: 'Seal Image',
+                  options: {
+                    hotspot: true,
+                  },
+                  fields: [
+                    defineField({
+                      name: 'alt',
+                      type: 'string',
+                      title: 'Alternative Text',
+                    }),
+                  ],
                 },
                 {
                   name: 'sealTitle',
@@ -197,6 +207,9 @@ export default defineType({
               of: [
                 {
                   type: 'image',
+                  options: {
+                    hotspot: true,
+                  },
                   fields: [
                     {
                       name: 'alt',

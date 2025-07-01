@@ -213,7 +213,7 @@ export const hotelType = defineType({
     defineField({
       name: 'ranking',
       type: 'object',
-      title: 'Ranking Einstellungen', 
+      title: 'Ranking Einstellungen',
       fields: [
         defineField({
           name: 'position',
@@ -915,21 +915,18 @@ export const hotelType = defineType({
     }),
 
     defineField({
-     name:"adds",
-     type:"object",
-     title:'Adds Section',
-     fields:[
-      defineField({
-        name:"add",
-        type:"reference",
-        title:"Adds",
-        to:[{type:"imageSection"}]
-      })
-     ]
+      name: 'adds',
+      type: 'object',
+      title: 'Adds Section',
+      fields: [
+        defineField({
+          name: 'add',
+          type: 'reference',
+          title: 'Adds',
+          to: [{type: 'imageSection'}],
+        }),
+      ],
     }),
-
-
-
 
     //fields entered by looking at petra code
     defineField({

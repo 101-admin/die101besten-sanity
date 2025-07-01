@@ -60,6 +60,13 @@ export const structure: StructureResolver = (S) => {
                             '_type == "allBlogs" && edition == "deutschland" ',
                           ),
                         ),
+                      S.listItem()
+                        .title('AllEvents')
+                        .child(
+                          S.documentTypeList('allEvents').filter(
+                            '_type == "allEvents" && edition == "deutschland" ',
+                          ),
+                        ),
                     ]),
                 ),
               S.listItem()
@@ -180,6 +187,13 @@ export const structure: StructureResolver = (S) => {
                             '_type == "allBlogs" && edition == "dash" && language == "de"',
                           ),
                         ),
+                        S.listItem()
+                        .title('AllEvents')
+                        .child(
+                          S.documentTypeList('allEvents').filter(
+                            '_type == "allEvents" && edition == "dach" ',
+                          ),
+                        ),
                     ]),
                 ),
               S.listItem()
@@ -298,6 +312,13 @@ export const structure: StructureResolver = (S) => {
                         .child(
                           S.documentTypeList('allBlogs').filter(
                             '_type == "allBlogs" && edition == "schweiz" && language == "de"',
+                          ),
+                        ),
+                        S.listItem()
+                        .title('AllEvents')
+                        .child(
+                          S.documentTypeList('allEvents').filter(
+                            '_type == "allEvents" && edition == "schweiz" ',
                           ),
                         ),
                     ]),
