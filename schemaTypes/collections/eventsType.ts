@@ -6,16 +6,42 @@ export const eventsType = defineType({
   title: 'Events',
   type: 'document',
   icon: CalendarIcon,
+  groups: [
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+  ],
   fields: [
     defineField({
       name: 'language',
       type: 'string',
       readOnly: true,
+      group: 'content',
     }),
     defineField({
       name: 'title',
       type: 'string',
       title: 'Titel',
+    }),
+    defineField({
+      name: 'edition',
+      type: 'string',
+      title: 'Edition',
+      options: {
+        list: [
+          {title: 'Deutschland', value: 'deutschland'},
+          {title: 'DACH', value: 'dach'},
+          {title: 'Schweiz', value: 'schweiz'},
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'slug',
@@ -72,16 +98,29 @@ export const eventsType = defineType({
           )
         },
       },
+      group: 'content',
+    }),
+    defineField({
+      name: 'eventType',
+      type: 'array',
+      title: 'Event Type',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'eventType'}],
+        },
+      ],
     }),
     defineField({
       name: 'startDate',
       type: 'date',
-      title: 'Start Datum/Zeit',
+      title: 'Datum',
     }),
     defineField({
       name: 'endDate',
       type: 'date',
-      title: 'End Datum/Zeit',
+      title: 'End Date',
+      group: 'content',
     }),
     defineField({
       name: 'location',
@@ -91,17 +130,17 @@ export const eventsType = defineType({
     defineField({
       name: 'description',
       type: 'text',
-      title: 'Beschreibung',
+      title: 'Teaser',
     }),
     defineField({
       name: 'body',
       type: 'blockContent',
-      title: 'Body',
+      title: 'Beschreibung',
     }),
     defineField({
       name: 'mainImage',
       type: 'image',
-      title: 'Hauptbild',
+      title: 'Main Image',
       options: {
         hotspot: true,
       },
@@ -109,22 +148,142 @@ export const eventsType = defineType({
         defineField({
           name: 'alt',
           type: 'string',
-          title: 'Alternative text',
+          title: 'Alternative Text',
         }),
       ],
+      group: 'content',
     }),
+
     defineField({
-      name: 'edition',
-      type: 'string',
-      title: 'Edition',
-      options: {
-        list: [
-          {title: 'Deutschland', value: 'deutschland'},
-          {title: 'DACH', value: 'dach'},
-          {title: 'Schweiz', value: 'schweiz'},
-        ],
+      name: 'gallery',
+      type: 'array',
+      title: 'Bildergallerie',
+      hidden: ({document}) => {
+        if (!document?.startDate) return true
+        const start = new Date(document.startDate as string).getTime()
+        if (isNaN(start)) return true
+        return Date.now() < start
       },
-      validation: (Rule) => Rule.required(),
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'image',
+              type: 'image',
+              title: 'Image',
+              options: {
+                hotspot: true,
+              },
+              fields: [
+                {
+                  name: 'alt',
+                  type: 'string',
+                  title: 'Alternative Text',
+                },
+              ],
+            }),
+          ],
+          preview: {
+            select: {
+              image: 'image',
+              alt: 'image.alt',
+            },
+            prepare(selection) {
+              const {image, alt} = selection
+              return {
+                title: alt || 'No alt text',
+                media: image,
+              }
+            },
+          },
+        },
+      ],
+    }),
+
+    defineField({
+      name: 'youtubeVideo',
+      type: 'object',
+      title: 'Youtube Video',
+      description: 'Please add a Valid Emebed Youtube Url',
+      hidden: ({document}) => {
+        if (!document?.startDate) return true
+        const start = new Date(document.startDate as string).getTime()
+        if (isNaN(start)) return true
+        return Date.now() < start
+      },
+      fields: [
+        defineField({
+          name: 'url',
+          type: 'url',
+          title: 'Youtube Video URL',
+        }),
+      ],
+      group: 'content',
+    }),
+
+    defineField({
+      name: 'allEvents',
+      type: 'object',
+      title: 'All Events',
+      fields: [
+        defineField({
+          name: 'title',
+          type: 'string',
+          title: 'Titel',
+        }),
+        defineField({
+          name: 'events',
+          type: 'array',
+          title: 'Events',
+          of: [
+            {
+              type: 'reference',
+              to: [{type: 'event'}],
+            },
+          ],
+        }),
+        defineField({
+          name: 'ctaButton',
+          type: 'object',
+          title: 'Button',
+          fields: [
+            defineField({
+              name: 'text',
+              type: 'string',
+              title: 'Text',
+            }),
+            defineField({
+              name: 'link',
+              type: 'string',
+              title: 'Link',
+            }),
+          ],
+        }),
+      ],
+      group: 'content',
+    }),
+
+    defineField({
+      name: 'adds',
+      type: 'object',
+      title: 'Adds Section',
+      fields: [
+        defineField({
+          name: 'add',
+          type: 'reference',
+          title: 'Adds',
+          to: [{type: 'imageSection'}],
+        }),
+      ],
+      group: 'content',
+    }),
+
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {
@@ -132,12 +291,13 @@ export const eventsType = defineType({
       title: 'title',
       date: 'startDate',
       media: 'mainImage',
+      edition: 'edition',
     },
     prepare(selection) {
-      const {date} = selection
+      const {date, edition} = selection
       return {
         ...selection,
-        subtitle: date ? new Date(date).toLocaleDateString() : 'Kein Datum',
+        subtitle: `${date ? new Date(date).toLocaleDateString() : 'Kein Datum'}-${edition ? `[${edition}]` : ''}`,
       }
     },
   },

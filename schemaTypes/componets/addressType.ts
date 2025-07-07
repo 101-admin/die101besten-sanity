@@ -1,7 +1,6 @@
 // import {PiAddressBookTabsLight} from 'react-icons/pi'
 import {defineField, defineType} from 'sanity'
 
-type CountryCode = 'de' | 'at' | 'ch' | 'it'
 
 export const addressType = defineType({
   name: 'address',
@@ -60,32 +59,22 @@ export const addressType = defineType({
     select: {
       street: 'street',
       streetNumber: 'streetNumber',
-      postalCode: 'postalCode',
-      cityRef: 'city',
-      country: 'country',
+      city: 'city.label',
+      country: 'country.name',
     },
     prepare({
       street,
       streetNumber,
+      city,
       country,
-      postalCode,
-      cityRef,
     }: {
       street?: string
       streetNumber?: string
-      country?: CountryCode
-      postalCode?: string
-      cityRef?: {label: string}
+      city?: string
+      country?: string
     }) {
-      const PREPOSITIONS: Record<CountryCode, string> = {
-        de: 'D-',
-        at: 'AT-',
-        ch: 'CH-',
-        it: 'IT-',
-      }
-
       return {
-        title: `${cityRef?.label || ''} | ${country ? PREPOSITIONS[country] : ''}${postalCode}`,
+        title: `${city || ''} | ${country || ''}`,
         subtitle: `${street} ${streetNumber}`,
       }
     },

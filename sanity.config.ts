@@ -42,6 +42,7 @@ export default defineConfig({
         'allBlogs',
         'specialEditionHotels',
         'hotelCategory',
+        'allEvents',
       ],
       weakReferences: true,
     }),
