@@ -1,11 +1,10 @@
 import {defineField, defineType} from 'sanity'
 import {HomeIcon} from '@sanity/icons'
 
-export const specialEditionHotels = defineType({
-  name: 'specialEditionHotels',
-  title: 'Special Edition Hotels',
+export const allEventsType = defineType({
+  name: 'allEvents',
+  title: 'All Events',
   type: 'document',
-  icon: HomeIcon,
   fields: [
     defineField({
       name: 'title',
@@ -45,11 +44,10 @@ export const specialEditionHotels = defineType({
         {
           type: 'reference',
           to: [
-            {type: 'allHotelsSlider'},
+            {type: 'eventsHero'},
+            {type: 'eventsCollection'},
             {type: 'dieInstagram'},
             {type: 'newsletter'},
-            {type: 'hotelCollection'},
-            {type: 'specialHotels'},
             {type: 'imageSection'},
           ],
           options: {
@@ -65,6 +63,17 @@ export const specialEditionHotels = defineType({
       group: 'seo',
     }),
   ],
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
+  ],
   preview: {
     select: {
       title: 'title',
@@ -78,15 +87,4 @@ export const specialEditionHotels = defineType({
       }
     },
   },
-  groups: [
-    {
-      name: 'seo',
-      title: 'SEO',
-    },
-    {
-      name: 'content',
-      title: 'Content',
-      default: true,
-    },
-  ],
 })

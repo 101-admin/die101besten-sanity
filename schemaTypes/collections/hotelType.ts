@@ -6,16 +6,29 @@ export const hotelType = defineType({
   title: 'Hotel',
   type: 'document',
   icon: DocumentTextIcon,
+  groups: [
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+  ],
   fields: [
     defineField({
       name: 'language',
       type: 'string',
       readOnly: true,
+      group: 'content',
     }),
     defineField({
       name: 'edition',
       type: 'string',
       title: 'Edition',
+      group: 'content',
       options: {
         list: [
           {title: 'Deutschland', value: 'deutschland'},
@@ -29,6 +42,7 @@ export const hotelType = defineType({
       name: 'variant',
       type: 'string',
       title: 'Hotel Type',
+      group: 'content',
       initialValue: 'classic',
       options: {
         list: [
@@ -42,6 +56,7 @@ export const hotelType = defineType({
       name: 'hotelType',
       type: 'string',
       title: 'Hotel Package',
+      group: 'content',
       initialValue: 'classic',
       options: {
         list: [
@@ -57,6 +72,7 @@ export const hotelType = defineType({
       name: 'segment',
       type: 'string',
       title: 'Hotel Segment',
+      group: 'content',
       options: {
         list: [
           {title: 'Leisure', value: 'leisure'},
@@ -69,6 +85,7 @@ export const hotelType = defineType({
       name: 'category',
       type: 'reference',
       title: 'Hotel Kategorie',
+      group: 'content',
       to: [{type: 'hotelCategory'}],
       hidden: ({document}) => document?.variant === 'special',
       options: {
@@ -94,6 +111,7 @@ export const hotelType = defineType({
       name: 'isPackageBooked',
       type: 'boolean',
       title: 'Hotel hat Paket gebucht',
+      group: 'content',
       initialValue: true,
       description: 'Enable package booking',
     }),
@@ -102,12 +120,14 @@ export const hotelType = defineType({
       name: 'name',
       type: 'string',
       title: 'Hotel Name',
+      group: 'content',
       description: 'Name of the hotel',
     }),
     defineField({
       name: 'slug',
       type: 'slug',
       title: 'Slug',
+      group: 'content',
       description: 'Eindeutige Bezeichnung für das Hotel, bspw. in der Website Url.',
       options: {
         source: 'name',
@@ -166,6 +186,7 @@ export const hotelType = defineType({
       name: 'image',
       type: 'image',
       title: 'Hotel Cover Image',
+      group: 'content',
       description: 'Image of the hotel',
       options: {
         hotspot: true,
@@ -183,6 +204,7 @@ export const hotelType = defineType({
       name: 'ctaButton',
       type: 'object',
       title: 'CTA Button',
+      group: 'content',
       fields: [
         defineField({
           name: 'text',
@@ -201,6 +223,7 @@ export const hotelType = defineType({
       name: 'achievements',
       type: 'array',
       title: 'Achievements',
+      group: 'content',
       description: 'Achievements of the hotel',
       of: [
         {
@@ -213,7 +236,8 @@ export const hotelType = defineType({
     defineField({
       name: 'ranking',
       type: 'object',
-      title: 'Ranking Einstellungen', 
+      title: 'Ranking Einstellungen',
+      group: 'content',
       fields: [
         defineField({
           name: 'position',
@@ -227,7 +251,11 @@ export const hotelType = defineType({
               if (context.document?.variant === 'special') {
                 return true // Skip validation for special variant
               }
-              return value && value >= 1 ? true : 'A position must be entered'
+              if (value !== undefined && value < 0) {
+                return false
+              }
+              return true
+              // return value && value >= 1 ? true : 'A position must be entered'
             }),
         }),
         defineField({
@@ -251,6 +279,7 @@ export const hotelType = defineType({
       name: 'primaryHeroSection',
       type: 'object',
       title: 'Primary Hero Section',
+      group: 'content',
       hidden: ({document}) => document?.hotelType === 'classic',
       fields: [
         defineField({
@@ -276,6 +305,7 @@ export const hotelType = defineType({
       name: 'secondaryHeroSection',
       type: 'object',
       title: 'Secondary Hero Section',
+      group: 'content',
       hidden: ({document}) => document?.hotelType !== 'classic',
       fields: [
         defineField({
@@ -312,11 +342,11 @@ export const hotelType = defineType({
     }),
 
     // Hotel Details
-
     defineField({
       name: 'hotelDetailsSection',
       type: 'object',
       title: 'Hotel Details Section',
+      group: 'content',
       hidden: ({document}) => document?.hotelType === 'classic',
       fields: [
         defineField({
@@ -359,11 +389,11 @@ export const hotelType = defineType({
     }),
 
     // About Hotel
-
     defineField({
       name: 'aboutHotel',
       type: 'object',
       title: 'About Hotel',
+      group: 'content',
       hidden: ({document}) => document?.hotelType !== 'classic',
       fields: [
         defineField({
@@ -416,6 +446,7 @@ export const hotelType = defineType({
       name: 'body',
       type: 'blockContent',
       title: 'Body',
+      group: 'content',
       hidden: ({document}) => document?.hotelType === 'classic',
     }),
 
@@ -424,6 +455,7 @@ export const hotelType = defineType({
       name: 'hotelEvents',
       type: 'object',
       title: 'Hotel Events Section',
+      group: 'content',
       hidden: ({document}) => document?.hotelType !== 'grand',
       fields: [
         defineField({
@@ -555,8 +587,8 @@ export const hotelType = defineType({
       name: 'hotelInfo',
       type: 'object',
       title: 'Hotel Info Section',
+      group: 'content',
       hidden: ({document}) => ['classic', 'premium'].includes(document?.hotelType as string),
-
       fields: [
         defineField({
           name: 'image',
@@ -596,6 +628,7 @@ export const hotelType = defineType({
       name: 'hotelInfoPremium',
       type: 'object',
       title: 'Hotel Info Section (Premium)',
+      group: 'content',
       hidden: ({document}) => document?.hotelType !== 'premium',
       fields: [
         defineField({
@@ -654,13 +687,12 @@ export const hotelType = defineType({
     }),
 
     //testimonials section
-
     defineField({
       name: 'testimonials',
       type: 'object',
       title: 'Testimonials',
+      group: 'content',
       hidden: ({document}) => ['classic', 'premium'].includes(document?.hotelType as string),
-
       fields: [
         defineField({
           name: 'testimonial',
@@ -692,6 +724,7 @@ export const hotelType = defineType({
       name: 'interviewSection',
       type: 'object',
       title: 'Interview Section',
+      group: 'content',
       hidden: ({document}) => !['exclusive', 'grand'].includes(document?.hotelType as string),
       fields: [
         defineField({
@@ -782,6 +815,7 @@ export const hotelType = defineType({
       name: 'hotelHighlights',
       type: 'object',
       title: 'Hotel Highlights Section',
+      group: 'content',
       fields: [
         defineField({
           name: 'headline',
@@ -855,6 +889,7 @@ export const hotelType = defineType({
       name: 'fullwidthImage',
       type: 'image',
       title: 'Fullwidth Image',
+      group: 'content',
       description: 'A full-width image to be displayed in the hotel details',
       hidden: ({document}) => document?.hotelType === 'classic',
       options: {
@@ -871,11 +906,11 @@ export const hotelType = defineType({
     }),
 
     // Map Section
-
     defineField({
       name: 'mapSection',
       type: 'object',
       title: 'Map Section',
+      group: 'content',
       fields: [
         defineField({
           name: 'headline',
@@ -915,28 +950,34 @@ export const hotelType = defineType({
     }),
 
     defineField({
-     name:"adds",
-     type:"object",
-     title:'Adds Section',
-     fields:[
-      defineField({
-        name:"add",
-        type:"reference",
-        title:"Adds",
-        to:[{type:"imageSection"}]
-      })
-     ]
+      name: 'adds',
+      type: 'object',
+      title: 'Adds Section',
+      group: 'content',
+      fields: [
+        defineField({
+          name: 'add',
+          type: 'reference',
+          title: 'Adds',
+          to: [{type: 'imageSection'}],
+        }),
+      ],
     }),
-
-
-
 
     //fields entered by looking at petra code
     defineField({
       name: 'address',
       title: 'Hotel Adresse',
       type: 'reference',
+      group: 'content',
       to: [{type: 'address'}],
+    }),
+
+    defineField({
+      name: 'seo',
+      title: 'SEO Settings',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {

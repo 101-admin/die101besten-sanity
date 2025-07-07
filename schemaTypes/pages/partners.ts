@@ -56,26 +56,20 @@ export const partnersType = defineType({
     defineField({
       name: 'seo',
       title: 'SEO Settings',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'metaTitle',
-          type: 'string',
-          title: 'Meta Title',
-        }),
-        defineField({
-          name: 'metaDescription',
-          type: 'text',
-          title: 'Meta Description',
-        }),
-        defineField({
-          name: 'keywords',
-          type: 'array',
-          title: 'Keywords',
-          of: [{type: 'string'}],
-        }),
-      ],
+      type: 'seo',
+      group: 'seo',
     }),
+  ],
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
   ],
   preview: {
     select: {

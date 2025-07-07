@@ -44,6 +44,16 @@ export default defineType({
               name: 'image',
               type: 'image',
               title: 'Event Image',
+              options: {
+                hotspot: true,
+              },
+              fields: [
+                defineField({
+                  name: 'alt',
+                  type: 'string',
+                  title: 'Alternative Text',
+                }),
+              ],
             },
             {
               name: 'description',

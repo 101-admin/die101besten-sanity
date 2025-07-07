@@ -37,7 +37,6 @@ export const aboutUsType = defineType({
         ],
       },
     }),
-
     defineField({
       name: 'components',
       title: 'Components',
@@ -68,6 +67,23 @@ export const aboutUsType = defineType({
         },
       ],
     }),
+    defineField({
+      name: 'seo',
+      title: 'SEO Settings',
+      type: 'seo',
+      group: 'seo',
+    }),
+  ],
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
   ],
   preview: {
     select: {

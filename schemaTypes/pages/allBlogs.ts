@@ -1,6 +1,6 @@
 import {defineType, defineField} from 'sanity'
 
-export default defineType({
+export const allBlogsType = defineType({
   name: 'allBlogs',
   type: 'document',
   title: 'All Blogs',
@@ -42,12 +42,23 @@ export default defineType({
       of: [
         {
           type: 'reference',
-          to: [{type: 'newsletter'}, {type: 'blogCollection'}, {type: 'blogPageTitle'}, {type: 'imageSection'}],
+          to: [
+            {type: 'newsletter'},
+            {type: 'blogCollection'},
+            {type: 'blogPageTitle'},
+            {type: 'imageSection'},
+          ],
           options: {
             layout: 'grid',
           },
         },
       ],
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO Settings',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {
@@ -63,4 +74,17 @@ export default defineType({
       }
     },
   },
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
+  ],
 })
+
+export default allBlogsType
