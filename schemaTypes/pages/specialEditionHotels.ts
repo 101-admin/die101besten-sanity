@@ -58,6 +58,12 @@ export const specialEditionHotels = defineType({
         },
       ],
     }),
+    defineField({
+      name: 'seo',
+      title: 'SEO Settings',
+      type: 'seo',
+      group: 'seo',
+    }),
   ],
   preview: {
     select: {
@@ -72,4 +78,15 @@ export const specialEditionHotels = defineType({
       }
     },
   },
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
+  ],
 })

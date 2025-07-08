@@ -6,11 +6,23 @@ export const eventsType = defineType({
   title: 'Events',
   type: 'document',
   icon: CalendarIcon,
+  groups: [
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+  ],
   fields: [
     defineField({
       name: 'language',
       type: 'string',
       readOnly: true,
+      group: 'content',
     }),
     defineField({
       name: 'edition',
@@ -29,6 +41,20 @@ export const eventsType = defineType({
       name: 'title',
       type: 'string',
       title: 'Title',
+    }),
+    defineField({
+      name: 'edition',
+      type: 'string',
+      title: 'Edition',
+      options: {
+        list: [
+          {title: 'Deutschland', value: 'deutschland'},
+          {title: 'DACH', value: 'dach'},
+          {title: 'Schweiz', value: 'schweiz'},
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'slug',
@@ -85,6 +111,18 @@ export const eventsType = defineType({
           )
         },
       },
+      group: 'content',
+    }),
+    defineField({
+      name: 'eventType',
+      type: 'array',
+      title: 'Event Type',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'eventType'}],
+        },
+      ],
     }),
     defineField({
       name: 'eventHotel',
@@ -94,12 +132,14 @@ export const eventsType = defineType({
     defineField({
       name: 'startDate',
       type: 'date',
-      title: 'Start Date',
+      title: 'Datum',
+      group: 'content',
     }),
     defineField({
       name: 'endDate',
       type: 'date',
       title: 'End Date',
+      group: 'content',
     }),
     defineField({
       name: 'location',
@@ -109,12 +149,12 @@ export const eventsType = defineType({
     defineField({
       name: 'description',
       type: 'text',
-      title: 'Description',
+      title: 'Teaser',
     }),
     defineField({
       name: 'body',
       type: 'blockContent',
-      title: 'Body',
+      title: 'Beschreibung',
     }),
     defineField({
       name: 'mainImage',
@@ -130,6 +170,7 @@ export const eventsType = defineType({
           title: 'Alternative Text',
         }),
       ],
+      group: 'content',
     }),
 
     defineField({
@@ -146,11 +187,50 @@ export const eventsType = defineType({
     }),
 
     defineField({
+      name: 'gallery',
+      type: 'array',
+      title: 'Bildergallerie',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'image',
+              type: 'image',
+              title: 'Image',
+              options: {
+                hotspot: true,
+              },
+              fields: [
+                {
+                  name: 'alt',
+                  type: 'string',
+                  title: 'Alternative Text',
+                },
+              ],
+            }),
+          ],
+          preview: {
+            select: {
+              image: 'image',
+              alt: 'image.alt',
+            },
+            prepare(selection) {
+              const {image, alt} = selection
+              return {
+                title: alt || 'No alt text',
+                media: image,
+              }
+            },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: 'youtubeVideo',
       type: 'object',
       title: 'Youtube Video',
-      description:
-        "Please add a Valid Emebed Youtube Url",
+      description: 'Please add a Valid Emebed Youtube Url',
       hidden: ({document}) => {
         if (!document?.startDate) return true
         const start = new Date(document.startDate as string).getTime()
@@ -164,6 +244,7 @@ export const eventsType = defineType({
           title: 'Youtube Video URL',
         }),
       ],
+      group: 'content',
     }),
     defineField({
       name: 'allEvents',
@@ -173,7 +254,7 @@ export const eventsType = defineType({
         defineField({
           name: 'title',
           type: 'string',
-          title: 'Title',
+          title: 'Titel',
         }),
         defineField({
           name: 'events',
@@ -187,23 +268,24 @@ export const eventsType = defineType({
           ],
         }),
         defineField({
-          name:"ctaButton",
-          type:"object",
-          title:"Button",
-          fields:[
+          name: 'ctaButton',
+          type: 'object',
+          title: 'Button',
+          fields: [
             defineField({
-              name:"text",
-              type:"string",
-              title:"Text",
+              name: 'text',
+              type: 'string',
+              title: 'Text',
             }),
             defineField({
-              name:"link",
-              type:"string",
-              title:"Link",
-            })
-          ]
-        })
+              name: 'link',
+              type: 'string',
+              title: 'Link',
+            }),
+          ],
+        }),
       ],
+      group: 'content',
     }),
 
     defineField({
@@ -214,10 +296,18 @@ export const eventsType = defineType({
         defineField({
           name: 'add',
           type: 'reference',
-          title: 'Adds',
+          title: 'Ad Banner',
           to: [{type: 'imageSection'}],
         }),
       ],
+      group: 'content',
+    }),
+
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {

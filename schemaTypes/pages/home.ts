@@ -38,6 +38,12 @@ export const homeType = defineType({
       },
     }),
     defineField({
+      name: 'seo',
+      title: 'SEO Settings',
+      type: 'seo',
+      group: 'seo',
+    }),
+    defineField({
       name: 'components',
       title: 'Components',
       type: 'array',
@@ -70,6 +76,17 @@ export const homeType = defineType({
         },
       ],
     }),
+  ],
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
   ],
   preview: {
     select: {

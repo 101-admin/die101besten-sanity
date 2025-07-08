@@ -58,6 +58,23 @@ export const allHotelsType = defineType({
         },
       ],
     }),
+    defineField({
+      name: 'seo',
+      title: 'SEO Settings',
+      type: 'seo',
+      group: 'seo',
+    }),
+  ],
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
   ],
   preview: {
     select: {

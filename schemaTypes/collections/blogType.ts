@@ -7,22 +7,36 @@ export const blogType = defineType({
   title: 'Blog',
   type: 'document',
   icon: DocumentTextIcon,
+  groups: [
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
+  ],
   fields: [
     defineField({
       name: 'language',
       type: 'string',
       readOnly: true,
+      group: 'content',
     }),
     defineField({
       name: 'title',
       type: 'string',
       title: 'Title',
       validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'slug',
       type: 'slug',
       title: 'Slug',
+      group: 'content',
       options: {
         source: 'title',
         slugify: (input) => {
@@ -80,17 +94,20 @@ export const blogType = defineType({
       type: 'text',
       title: 'Description',
       validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'readMore',
       type: 'string',
       title: 'Read More',
       validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'edition',
       type: 'string',
       title: 'Edition',
+      group: 'content',
       options: {
         list: [
           {title: 'Deutschland', value: 'deutschland'},
@@ -105,11 +122,13 @@ export const blogType = defineType({
       type: 'reference',
       title: 'Author',
       to: {type: 'author'},
+      group: 'content',
     }),
     defineField({
       name: 'mainImage',
       type: 'image',
       title: 'Main Image',
+      group: 'content',
       options: {
         hotspot: true,
       },
@@ -125,6 +144,7 @@ export const blogType = defineType({
       name: 'category',
       type: 'array',
       title: 'Categories',
+      group: 'content',
       of: [
         {
           type: 'reference',
@@ -132,37 +152,23 @@ export const blogType = defineType({
         },
       ],
     }),
-    // defineField({
-    //   name: 'category',
-    //   type: 'string',
-    //   title: 'Category',
-    //   options: {
-    //     list: [
-    //       {title: 'Alle Artikel anzeigen', value: 'Alle Artikel anzeigen'},
-    //       {title: 'Blog Kategorie', value: 'Blog Kategorie'},
-    //       {title: 'Weitere Blog Kategorie', value: 'Weitere Blog Kategorie'},
-    //       {title: 'Noch eine Kategorie', value: 'Noch eine Kategorie'},
-    //     ],
-    //   },
-    // }),
     defineField({
       name: 'publishedAt',
       type: 'datetime',
       title: 'Published At',
+      group: 'content',
     }),
     defineField({
       name: 'body',
       type: 'blockContent',
       title: 'Body',
+      group: 'content',
     }),
-
-    // Partner Section
-
-    //Article Section
     defineField({
       name: 'articleSection',
       type: 'object',
       title: 'Article Section',
+      group: 'content',
       fields: [
         defineField({
           name: 'title',
@@ -200,18 +206,26 @@ export const blogType = defineType({
       ],
     }),
     defineField({
-      name:"adds",
-      type:"object",
-      title:'Adds Section',
-      fields:[
-       defineField({
-         name:"add",
-         type:"reference",
-         title:"Adds",
-         to:[{type:"imageSection"}]
-       })
-      ]
-     }),
+      name: 'adds',
+      type: 'object',
+      title: 'Adds Section',
+      group: 'content',
+      fields: [
+        defineField({
+          name: 'add',
+          type: 'reference',
+          title: 'Adds',
+          to: [{type: 'imageSection'}],
+        }),
+      ],
+    }),
+    // SEO Fields
+    defineField({
+      name: 'seo',
+      title: 'SEO Settings',
+      type: 'seo',
+      group: 'seo',
+    }),
   ],
   preview: {
     select: {

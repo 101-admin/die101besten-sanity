@@ -13,6 +13,7 @@ import {partnersType} from './pages/partners'
 import {eventsType} from './collections/eventsType'
 import {navbarType} from './navigation/navbarType'
 import {footerType} from './navigation/footerType'
+import {seoType} from './componets/seoType'
 import heroSlider from './componets/heroSlider'
 import partnerLogo from './componets/partnerLogo'
 import textQuote from './componets/textQuote'
@@ -63,8 +64,11 @@ import {allEventsType} from './pages/allEvents'
 import eventsHero from './componets/eventsHero'
 import eventsCollection from './componets/eventsCollection'
 import { eventsTags } from './collections/eventsTags'
+import eventType from './collections/eventType'
+
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
+    seoType,
     hotelType,
     eventsType,
     editionType,
@@ -128,5 +132,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     eventsHero,
     eventsCollection,
     eventsTags,
-    ],
+    eventType,
+  ],
 }
