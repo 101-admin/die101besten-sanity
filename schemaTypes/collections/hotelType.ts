@@ -46,10 +46,19 @@ export const hotelType = defineType({
       initialValue: 'classic',
       options: {
         list: [
-          {title: 'Special', value: 'special'},
-          {title: 'Classic', value: 'classic'},
+          {title: 'Special Edition', value: 'special'},
+          {title: '101 Hotel', value: 'classic'},
         ],
       },
+    }),
+
+    defineField({
+      name: 'isPackageBooked',
+      type: 'boolean',
+      title: 'Hotel hat Paket gebucht',
+      group: 'content',
+      initialValue: true,
+      description: 'Enable package booking',
     }),
 
     defineField({
@@ -61,9 +70,9 @@ export const hotelType = defineType({
       options: {
         list: [
           {title: 'Basic', value: 'classic'},
+          {title: 'Premium', value: 'premium'},
           {title: 'Exclusive', value: 'exclusive'},
           {title: 'Grand', value: 'grand'},
-          {title: 'Premium', value: 'premium'},
         ],
       },
     }),
@@ -105,15 +114,6 @@ export const hotelType = defineType({
           }
           return value ? true : 'A category must be selected'
         }),
-    }),
-
-    defineField({
-      name: 'isPackageBooked',
-      type: 'boolean',
-      title: 'Hotel hat Paket gebucht',
-      group: 'content',
-      initialValue: true,
-      description: 'Enable package booking',
     }),
 
     defineField({
@@ -185,9 +185,8 @@ export const hotelType = defineType({
     defineField({
       name: 'image',
       type: 'image',
-      title: 'Hotel Cover Image',
+      title: 'Titelbild in Ranking Liste',
       group: 'content',
-      description: 'Image of the hotel',
       options: {
         hotspot: true,
       },
@@ -203,18 +202,19 @@ export const hotelType = defineType({
     defineField({
       name: 'ctaButton',
       type: 'object',
-      title: 'CTA Button',
+      title: 'Hotel Link',
+      description:"Link zur Website des Hotels.",
       group: 'content',
       fields: [
         defineField({
           name: 'text',
           type: 'string',
-          title: 'CTA Button Text',
+          title: 'Button Text',
         }),
         defineField({
           name: 'url',
           type: 'string',
-          title: 'CTA Button URL',
+          title: 'Button Link',
         }),
       ],
     }),
@@ -222,9 +222,9 @@ export const hotelType = defineType({
     defineField({
       name: 'achievements',
       type: 'array',
-      title: 'Achievements',
+      title: 'Tags',
       group: 'content',
-      description: 'Achievements of the hotel',
+      description: 'Auszeichnungen, wie z.B. Outstanding oder Honored.',
       of: [
         {
           type: 'reference',
@@ -244,7 +244,6 @@ export const hotelType = defineType({
           type: 'number',
           title: 'Ranking Position',
           hidden: ({document}) => document?.variant === 'special',
-          description: 'Lower numbers appear first (e.g., 1 is highest rank)',
           validation: (Rule) =>
             Rule.custom((value, context) => {
               // Only require position when variant is not 'special'
@@ -278,14 +277,14 @@ export const hotelType = defineType({
     defineField({
       name: 'primaryHeroSection',
       type: 'object',
-      title: 'Primary Hero Section',
+      title: 'Titelbild (Hero Section - Premium bis Grand)',
       group: 'content',
       hidden: ({document}) => document?.hotelType === 'classic',
       fields: [
         defineField({
           name: 'image',
           type: 'image',
-          title: 'Hotel Image',
+          title: 'Titelbild (Hero Image)',
           options: {
             hotspot: true,
           },
@@ -304,14 +303,14 @@ export const hotelType = defineType({
     defineField({
       name: 'secondaryHeroSection',
       type: 'object',
-      title: 'Secondary Hero Section',
+      title: 'Titelbild (Hero Section - Basic)',
       group: 'content',
       hidden: ({document}) => document?.hotelType !== 'classic',
       fields: [
         defineField({
           name: 'image',
           type: 'image',
-          title: 'Hero Image',
+          title: 'Titelbild (Hero Image)',
           options: {
             hotspot: true,
           },
@@ -326,7 +325,8 @@ export const hotelType = defineType({
         defineField({
           name: 'brandImages',
           type: 'array',
-          title: 'Brand Images',
+          title: 'Logo zusätzliche Auszeichnung',
+          description:"z.B. Hornstein Ranking, Fairjob Hotel",
           of: [
             {
               type: 'reference',
@@ -345,7 +345,7 @@ export const hotelType = defineType({
     defineField({
       name: 'hotelDetailsSection',
       type: 'object',
-      title: 'Hotel Details Section',
+      title: 'About',
       group: 'content',
       hidden: ({document}) => document?.hotelType === 'classic',
       fields: [
@@ -368,12 +368,13 @@ export const hotelType = defineType({
         defineField({
           name: 'description',
           type: 'text',
-          title: 'Description',
+          title: 'About Text',
         }),
         defineField({
           name: 'brandImages',
           type: 'array',
-          title: 'Brand Images',
+          title: 'Logo zusätzliche Auszeichnung',
+          description:"z.B. Hornstein Ranking, Fairjob Hotel",
           of: [
             {
               type: 'reference',
@@ -392,14 +393,14 @@ export const hotelType = defineType({
     defineField({
       name: 'aboutHotel',
       type: 'object',
-      title: 'About Hotel',
+      title: '5 Fakten (Basic)',
       group: 'content',
       hidden: ({document}) => document?.hotelType !== 'classic',
       fields: [
         defineField({
           name: 'aboutHotels',
           type: 'array',
-          title: 'About Hotels',
+          title: 'Fakten',
           of: [
             {
               type: 'object',
@@ -407,7 +408,7 @@ export const hotelType = defineType({
                 defineField({
                   name: 'image',
                   type: 'image',
-                  title: 'Image',
+                  title: 'Bild neben den Fakten',
                   options: {
                     hotspot: true,
                   },
@@ -420,20 +421,22 @@ export const hotelType = defineType({
                   ],
                 }),
                 defineField({
-                  name: 'description',
-                  type: 'blockContent',
-                  title: 'Description',
-                }),
-                defineField({
                   name: 'imagePosition',
                   type: 'string',
-                  title: 'Image Position',
+                  title: 'Position des Bildes',
+                  description:"Auswählen, ob das Bild links oder rechts neben dem Text stehen soll.",
                   options: {
                     list: [
                       {title: 'Left', value: 'left'},
                       {title: 'Right', value: 'right'},
                     ],
                   },
+                }),
+                defineField({
+                  name: 'description',
+                  type: 'blockContent',
+                  title: 'Fakten',
+                  description:"Texte als H2 Format definieren, sodass sie wie vorgesehen gerendert werden.Text der von Hashtags umschlossen ist, wird als farbiger Text in Highlightfarbe dargestellt. Ein Zeilenumbruch fügt einen Abstand ein.",
                 }),
               ],
             },
@@ -445,7 +448,8 @@ export const hotelType = defineType({
     defineField({
       name: 'body',
       type: 'blockContent',
-      title: 'Body',
+      title: '5 Fakten (Premium bis Grand)',
+      description:"Element “Description Grid” für ein- oder zweispaltiges Layout (ein oder zwei Texte einfügen).Element “Full Width Image” für Bilder.",
       group: 'content',
       hidden: ({document}) => document?.hotelType === 'classic',
     }),
@@ -637,6 +641,11 @@ export const hotelType = defineType({
           title: 'Person',
           fields: [
             defineField({
+              name: 'host',
+              type: 'string',
+              title: 'Überschrift Gastgeber',
+            }),
+            defineField({
               name: 'image',
               type: 'image',
               title: 'Person Image',
@@ -652,19 +661,14 @@ export const hotelType = defineType({
               ],
             }),
             defineField({
-              name: 'name',
-              type: 'string',
-              title: 'Person Name',
-            }),
-            defineField({
-              name: 'host',
-              type: 'string',
-              title: 'Person Host',
-            }),
-            defineField({
               name: 'role',
               type: 'string',
               title: 'Person Role',
+            }),
+            defineField({
+              name: 'name',
+              type: 'string',
+              title: 'Person Name',
             }),
           ],
         }),
@@ -676,7 +680,7 @@ export const hotelType = defineType({
         defineField({
           name: 'description',
           type: 'blockContent',
-          title: 'Description',
+          title: 'Beschreibung Hotel',
         }),
         // defineField({
         //   name: 'readMore',
@@ -690,14 +694,14 @@ export const hotelType = defineType({
     defineField({
       name: 'testimonials',
       type: 'object',
-      title: 'Testimonials',
+      title: 'Zitat Section',
       group: 'content',
       hidden: ({document}) => ['classic', 'premium'].includes(document?.hotelType as string),
       fields: [
         defineField({
           name: 'testimonial',
           type: 'array',
-          title: 'Testimonial',
+          title: 'Zitat Section',
           of: [
             {
               type: 'object',
@@ -705,12 +709,13 @@ export const hotelType = defineType({
                 defineField({
                   name: 'review',
                   type: 'text',
-                  title: 'Review',
+                  title: 'Zitat Text',
                 }),
                 defineField({
                   name: 'author',
                   type: 'string',
-                  title: 'Author',
+                  title: 'Autor',
+                  description: 'Vorname Nachname - Rolle der zitierenden Person ',
                 }),
               ],
             },
@@ -730,7 +735,7 @@ export const hotelType = defineType({
         defineField({
           name: 'title',
           type: 'string',
-          title: 'Title',
+          title: 'Überschrift',
         }),
         defineField({
           name: 'manager',
@@ -760,8 +765,8 @@ export const hotelType = defineType({
         defineField({
           name: 'exclusiveQuestions',
           type: 'array',
-          title: 'Questions & Answers (EXCLUSIVE)',
-          description: '5 questions and answers for EXCLUSIVE hotels',
+          title: 'Fragen & Antworten (Nur Exclusive)',
+          description: 'Es werden nur 5 Fragen und Antworten auf der Webseite ausgegeben.',
           hidden: ({document}) => document?.hotelType !== 'exclusive',
 
           of: [
@@ -785,10 +790,10 @@ export const hotelType = defineType({
         defineField({
           name: 'grandQuestions',
           type: 'array',
-          title: 'Questions & Answers (GRAND)',
+          title: 'Fragen & Antworten (Nur Grand)',
           hidden: ({document}) => document?.hotelType !== 'grand',
 
-          description: '6 questions and answers for GRAND hotels',
+          description: 'Es sind 6 Fragen und Antworten vorgesehen. Wenn es mehr als 6 Fragen gibt, werden diese trotzdem auf der Webseite ausgegeben.',
           of: [
             {
               type: 'object',
@@ -905,6 +910,15 @@ export const hotelType = defineType({
       ],
     }),
 
+    //fields entered by looking at petra code
+    defineField({
+      name: 'address',
+      title: 'Hotel Adresse',
+      type: 'reference',
+      group: 'content',
+      to: [{type: 'address'}],
+    }),
+
     // Map Section
     defineField({
       name: 'mapSection',
@@ -952,27 +966,17 @@ export const hotelType = defineType({
     defineField({
       name: 'adds',
       type: 'object',
-      title: 'Adds Section',
+      title: 'Ad Banner Section',
       group: 'content',
       fields: [
         defineField({
           name: 'add',
           type: 'reference',
-          title: 'Adds',
+          title: 'Ad Banner',
           to: [{type: 'imageSection'}],
         }),
       ],
     }),
-
-    //fields entered by looking at petra code
-    defineField({
-      name: 'address',
-      title: 'Hotel Adresse',
-      type: 'reference',
-      group: 'content',
-      to: [{type: 'address'}],
-    }),
-
     defineField({
       name: 'seo',
       title: 'SEO Settings',

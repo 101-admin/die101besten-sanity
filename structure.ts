@@ -86,7 +86,7 @@ export const structure: StructureResolver = (S) => {
                         .title('Events')
                         .child(
                           S.documentTypeList('event').filter(
-                            '_type == "event" && edition == "deutschland" && language == "de"',
+                            '_type == "event" && edition == "deutschland"',
                           ),
                         ),
                       S.listItem()
@@ -166,7 +166,7 @@ export const structure: StructureResolver = (S) => {
                             '_type == "partners" && edition == "dach" && language == "de"',
                           ),
                         ),
-                        S.listItem()
+                      S.listItem()
                         .title('AllHotels')
                         .child(
                           S.documentTypeList('allHotels').filter(
@@ -184,14 +184,14 @@ export const structure: StructureResolver = (S) => {
                         .title('AllBlogs')
                         .child(
                           S.documentTypeList('allBlogs').filter(
-                            '_type == "allBlogs" && edition == "dash" && language == "de"',
+                            '_type == "allBlogs" && edition == "dach" ',
                           ),
                         ),
-                        S.listItem()
+                      S.listItem()
                         .title('AllEvents')
                         .child(
                           S.documentTypeList('allEvents').filter(
-                            '_type == "allEvents" && edition == "dach" ',
+                            '_type == "allEvents" && edition == "dach"',
                           ),
                         ),
                     ]),
@@ -216,22 +216,18 @@ export const structure: StructureResolver = (S) => {
                             '_type == "event" && edition == "dach" && language == "de"',
                           ),
                         ),
-                        S.listItem()
+                      S.listItem()
                         .title('Classic Hotels')
                         .child(
                           S.documentTypeList('hotel')
-                            .filter(
-                              '_type == "hotel" && edition == "dach" && variant == "classic"',
-                            )
+                            .filter('_type == "hotel" && edition == "dach" && variant == "classic"')
                             .defaultOrdering([{field: 'ranking.position', direction: 'asc'}]),
                         ),
                       S.listItem()
                         .title('Special Hotels')
                         .child(
                           S.documentTypeList('hotel')
-                            .filter(
-                              '_type == "hotel" && edition == "dach" && variant == "special"',
-                            )
+                            .filter('_type == "hotel" && edition == "dach" && variant == "special"')
                             .defaultOrdering([{field: 'ranking.position', direction: 'asc'}]),
                         ),
                     ]),
@@ -293,7 +289,7 @@ export const structure: StructureResolver = (S) => {
                             '_type == "partners" && edition == "schweiz" && language == "de"',
                           ),
                         ),
-                        S.listItem()
+                      S.listItem()
                         .title('AllHotels')
                         .child(
                           S.documentTypeList('allHotels').filter(
@@ -311,14 +307,14 @@ export const structure: StructureResolver = (S) => {
                         .title('AllBlogs')
                         .child(
                           S.documentTypeList('allBlogs').filter(
-                            '_type == "allBlogs" && edition == "schweiz" && language == "de"',
+                            '_type == "allBlogs" && edition == "schweiz"',
                           ),
                         ),
-                        S.listItem()
+                      S.listItem()
                         .title('AllEvents')
                         .child(
                           S.documentTypeList('allEvents').filter(
-                            '_type == "allEvents" && edition == "schweiz" ',
+                            '_type == "allEvents" && edition == "schweiz"',
                           ),
                         ),
                     ]),
@@ -343,7 +339,7 @@ export const structure: StructureResolver = (S) => {
                             '_type == "event" && edition == "schweiz" && language == "de"',
                           ),
                         ),
-                        S.listItem()
+                      S.listItem()
                         .title('Classic Hotels')
                         .child(
                           S.documentTypeList('hotel')

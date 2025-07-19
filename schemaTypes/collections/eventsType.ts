@@ -25,22 +25,10 @@ export const eventsType = defineType({
       group: 'content',
     }),
     defineField({
-      name: 'edition',
-      type: 'string',
-      title: 'Edition',
-      options: {
-        list: [
-          {title: 'Deutschland', value: 'deutschland'},
-          {title: 'DACH', value: 'dach'},
-          {title: 'Schweiz', value: 'schweiz'},
-        ],
-      },
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'title',
       type: 'string',
-      title: 'Title',
+      title: 'Titel',
+      group: 'content',
     }),
     defineField({
       name: 'edition',
@@ -123,11 +111,7 @@ export const eventsType = defineType({
           to: [{type: 'eventType'}],
         },
       ],
-    }),
-    defineField({
-      name: 'eventHotel',
-      type: 'string',
-      title: 'Event Hotel',
+      group: 'content',
     }),
     defineField({
       name: 'startDate',
@@ -136,25 +120,22 @@ export const eventsType = defineType({
       group: 'content',
     }),
     defineField({
-      name: 'endDate',
-      type: 'date',
-      title: 'End Date',
-      group: 'content',
-    }),
-    defineField({
       name: 'location',
       type: 'string',
-      title: 'Location',
+      title: 'Ort',
+      group: 'content',
     }),
     defineField({
       name: 'description',
       type: 'text',
       title: 'Teaser',
+      group: 'content',
     }),
     defineField({
       name: 'body',
       type: 'blockContent',
       title: 'Beschreibung',
+      group: 'content',
     }),
     defineField({
       name: 'mainImage',
@@ -174,22 +155,15 @@ export const eventsType = defineType({
     }),
 
     defineField({
-      name: 'tags',
-      type: 'array',
-      title: 'Tags',
-      description: 'Tags of the event',
-      of: [
-        {
-          type: 'reference',
-          to: [{type: 'eventsTags'}],
-        },
-      ],
-    }),
-
-    defineField({
       name: 'gallery',
       type: 'array',
       title: 'Bildergallerie',
+      hidden: ({document}) => {
+        if (!document?.startDate) return true
+        const start = new Date(document.startDate as string).getTime()
+        if (isNaN(start)) return true
+        return Date.now() < start
+      },
       of: [
         {
           type: 'object',
@@ -225,7 +199,9 @@ export const eventsType = defineType({
           },
         },
       ],
+      group: 'content',
     }),
+
     defineField({
       name: 'youtubeVideo',
       type: 'object',
@@ -246,6 +222,7 @@ export const eventsType = defineType({
       ],
       group: 'content',
     }),
+
     defineField({
       name: 'allEvents',
       type: 'object',
@@ -296,7 +273,7 @@ export const eventsType = defineType({
         defineField({
           name: 'add',
           type: 'reference',
-          title: 'Ad Banner',
+          title: 'Adds',
           to: [{type: 'imageSection'}],
         }),
       ],
