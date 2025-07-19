@@ -28,6 +28,7 @@ export const eventsType = defineType({
       name: 'title',
       type: 'string',
       title: 'Titel',
+      group: 'content',
     }),
     defineField({
       name: 'edition',
@@ -110,32 +111,31 @@ export const eventsType = defineType({
           to: [{type: 'eventType'}],
         },
       ],
+      group: 'content',
     }),
     defineField({
       name: 'startDate',
       type: 'date',
       title: 'Datum',
-    }),
-    defineField({
-      name: 'endDate',
-      type: 'date',
-      title: 'End Date',
       group: 'content',
     }),
     defineField({
       name: 'location',
       type: 'string',
       title: 'Ort',
+      group: 'content',
     }),
     defineField({
       name: 'description',
       type: 'text',
       title: 'Teaser',
+      group: 'content',
     }),
     defineField({
       name: 'body',
       type: 'blockContent',
       title: 'Beschreibung',
+      group: 'content',
     }),
     defineField({
       name: 'mainImage',
@@ -199,6 +199,7 @@ export const eventsType = defineType({
           },
         },
       ],
+      group: 'content',
     }),
 
     defineField({
