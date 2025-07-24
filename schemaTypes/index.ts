@@ -63,9 +63,7 @@ import countryType from './componets/countryType'
 import {allEventsType} from './pages/allEvents'
 import eventsHero from './componets/eventsHero'
 import eventsCollection from './componets/eventsCollection'
-import { eventsTags } from './collections/eventsTags'
 import eventType from './collections/eventType'
-
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     seoType,
@@ -131,7 +129,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     allEventsType,
     eventsHero,
     eventsCollection,
-    eventsTags,
     eventType,
   ],
 }
