@@ -131,7 +131,7 @@ export const hotelType = defineType({
       description: 'Eindeutige Bezeichnung für das Hotel, bspw. in der Website Url.',
       options: {
         source: 'name',
-        slugify: (input) => {
+        slugify: (input, _schemaType, context) => {
           const umlautMap: {[key: string]: string} = {
             ä: 'ae',
             ö: 'oe',
@@ -162,22 +162,32 @@ export const hotelType = defineType({
             Ü: 'ue',
           }
 
-          return (
-            input
-              .toLowerCase()
-              // Replace umlauts and special characters
-              .replace(/[äöüßæøéèêëáàâãñóòôõúùûýÿÄÖÜ]/g, (char) => umlautMap[char] || char)
-              // Replace spaces with hyphens
-              .replace(/\s+/g, '-')
-              // Replace ampersand with 'and'
-              .replace(/&/g, 'and')
-              // Remove all other special characters
-              .replace(/[^a-z0-9-]/g, '')
-              // Remove multiple consecutive hyphens
-              .replace(/-+/g, '-')
-              // Remove leading and trailing hyphens
-              .replace(/^-+|-+$/g, '')
-          )
+          // Create slug for the hotel name part
+          const nameSlug = input
+            .toLowerCase()
+            .replace(/[äöüßæøéèêëáàâãñóòôõúùûýÿÄÖÜ]/g, (char) => umlautMap[char] || char)
+            .replace(/\s+/g, '-')
+            .replace(/&/g, 'and')
+            .replace(/[^a-z0-9-]/g, '')
+            .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '')
+
+          const document = context?.parent as {edition?: string; language?: string} | undefined
+          const editionMap: Record<string, string> = {
+            deutschland: 'de',
+            dach: 'dach',
+            schweiz: 'ch',
+          }
+          const editionValue = document?.edition || ''
+          const editionCode =
+            editionMap[editionValue] || (typeof editionValue === 'string' ? editionValue : '')
+          const languageCode = (document?.language || '').toLowerCase()
+
+          const parts = [editionCode, nameSlug, languageCode].filter(Boolean).join('-')
+          return parts
+            .toLowerCase()
+            .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '')
         },
       },
     }),
@@ -203,7 +213,7 @@ export const hotelType = defineType({
       name: 'ctaButton',
       type: 'object',
       title: 'Hotel Link',
-      description:"Link zur Website des Hotels.",
+      description: 'Link zur Website des Hotels.',
       group: 'content',
       fields: [
         defineField({
@@ -296,6 +306,33 @@ export const hotelType = defineType({
             },
           ],
         }),
+        defineField({
+          name:"gallery",
+          type:"array",
+          title:"Image Gallery",
+          of:[
+            {
+              type:"object",
+              fields:[
+                defineField({
+                  name:"image",
+                  type:"image",
+                  title:"Image",
+                  options:{
+                    hotspot:true
+                  },
+                  fields:[
+                    defineField({
+                      name:"alt",
+                      type:"string",
+                      title:"Alternative Text",
+                    })
+                  ]
+                })
+              ]
+            }
+          ]
+        }),
       ],
     }),
 
@@ -326,7 +363,7 @@ export const hotelType = defineType({
           name: 'brandImages',
           type: 'array',
           title: 'Logo zusätzliche Auszeichnung',
-          description:"z.B. Hornstein Ranking, Fairjob Hotel",
+          description: 'z.B. Hornstein Ranking, Fairjob Hotel',
           of: [
             {
               type: 'reference',
@@ -374,7 +411,7 @@ export const hotelType = defineType({
           name: 'brandImages',
           type: 'array',
           title: 'Logo zusätzliche Auszeichnung',
-          description:"z.B. Hornstein Ranking, Fairjob Hotel",
+          description: 'z.B. Hornstein Ranking, Fairjob Hotel',
           of: [
             {
               type: 'reference',
@@ -424,7 +461,8 @@ export const hotelType = defineType({
                   name: 'imagePosition',
                   type: 'string',
                   title: 'Position des Bildes',
-                  description:"Auswählen, ob das Bild links oder rechts neben dem Text stehen soll.",
+                  description:
+                    'Auswählen, ob das Bild links oder rechts neben dem Text stehen soll.',
                   options: {
                     list: [
                       {title: 'Left', value: 'left'},
@@ -436,7 +474,8 @@ export const hotelType = defineType({
                   name: 'description',
                   type: 'blockContent',
                   title: 'Fakten',
-                  description:"Texte als H2 Format definieren, sodass sie wie vorgesehen gerendert werden.Text der von Hashtags umschlossen ist, wird als farbiger Text in Highlightfarbe dargestellt. Ein Zeilenumbruch fügt einen Abstand ein.",
+                  description:
+                    'Texte als H2 Format definieren, sodass sie wie vorgesehen gerendert werden.Text der von Hashtags umschlossen ist, wird als farbiger Text in Highlightfarbe dargestellt. Ein Zeilenumbruch fügt einen Abstand ein.',
                 }),
               ],
             },
@@ -449,142 +488,143 @@ export const hotelType = defineType({
       name: 'body',
       type: 'blockContent',
       title: '5 Fakten (Premium bis Grand)',
-      description:"Element “Description Grid” für ein- oder zweispaltiges Layout (ein oder zwei Texte einfügen).Element “Full Width Image” für Bilder.",
+      description:
+        'Element “Description Grid” für ein- oder zweispaltiges Layout (ein oder zwei Texte einfügen).Element “Full Width Image” für Bilder.',
       group: 'content',
       hidden: ({document}) => document?.hotelType === 'classic',
     }),
 
     // Hotel Events - Show for Grand only
-    defineField({
-      name: 'hotelEvents',
-      type: 'object',
-      title: 'Hotel Events Section',
-      group: 'content',
-      hidden: ({document}) => document?.hotelType !== 'grand',
-      fields: [
-        defineField({
-          name: 'title',
-          type: 'string',
-          title: 'Title',
-        }),
-        defineField({
-          name: 'text',
-          type: 'text',
-          title: 'Description',
-        }),
-        defineField({
-          name: 'events',
-          type: 'array',
-          title: 'Events List',
-          description: 'List all existing events for this hotel',
-          of: [
-            {
-              type: 'object',
-              fields: [
-                defineField({
-                  name: 'image',
-                  type: 'image',
-                  title: 'Event Image',
-                  options: {
-                    hotspot: true,
-                  },
-                  fields: [
-                    {
-                      name: 'alt',
-                      type: 'string',
-                      title: 'Alternative Text',
-                    },
-                  ],
-                }),
-                defineField({
-                  name: 'title',
-                  type: 'string',
-                  title: 'Title',
-                }),
-                defineField({
-                  name: 'subtitle',
-                  type: 'string',
-                  title: 'SubTitle',
-                }),
-                defineField({
-                  name: 'description',
-                  type: 'text',
-                  title: 'Event Description',
-                }),
-                defineField({
-                  name: 'eventDate',
-                  type: 'object',
-                  title: 'Event Date',
-                  fields: [
-                    defineField({
-                      name: 'name',
-                      type: 'string',
-                      title: 'Date Name',
-                    }),
-                    defineField({
-                      name: 'date',
-                      type: 'date',
-                      title: 'Date',
-                    }),
-                  ],
-                }),
-                defineField({
-                  name: 'eventTime',
-                  type: 'object',
-                  title: 'Event Time',
-                  fields: [
-                    defineField({
-                      name: 'name',
-                      type: 'string',
-                      title: 'Time Name',
-                    }),
-                    defineField({
-                      name: 'time',
-                      type: 'string',
-                      title: 'Time',
-                    }),
-                  ],
-                }),
-                defineField({
-                  name: 'eventLocation',
-                  type: 'object',
-                  title: 'Event Location',
-                  fields: [
-                    defineField({
-                      name: 'name',
-                      type: 'string',
-                      title: 'Location Name',
-                    }),
-                    defineField({
-                      name: 'location',
-                      type: 'string',
-                      title: 'Location',
-                    }),
-                  ],
-                }),
-                defineField({
-                  name: 'ctaButton',
-                  type: 'object',
-                  title: 'CTA Button',
-                  fields: [
-                    defineField({
-                      name: 'text',
-                      type: 'string',
-                      title: 'Button Text',
-                    }),
-                    defineField({
-                      name: 'url',
-                      type: 'string',
-                      title: 'Button URL',
-                    }),
-                  ],
-                }),
-              ],
-            },
-          ],
-        }),
-      ],
-    }),
+    // defineField({
+    //   name: 'hotelEvents',
+    //   type: 'object',
+    //   title: 'Hotel Events Section',
+    //   group: 'content',
+    //   hidden: ({document}) => document?.hotelType !== 'grand',
+    //   fields: [
+    //     defineField({
+    //       name: 'title',
+    //       type: 'string',
+    //       title: 'Title',
+    //     }),
+    //     defineField({
+    //       name: 'text',
+    //       type: 'text',
+    //       title: 'Description',
+    //     }),
+    //     defineField({
+    //       name: 'events',
+    //       type: 'array',
+    //       title: 'Events List',
+    //       description: 'List all existing events for this hotel',
+    //       of: [
+    //         {
+    //           type: 'object',
+    //           fields: [
+    //             defineField({
+    //               name: 'image',
+    //               type: 'image',
+    //               title: 'Event Image',
+    //               options: {
+    //                 hotspot: true,
+    //               },
+    //               fields: [
+    //                 {
+    //                   name: 'alt',
+    //                   type: 'string',
+    //                   title: 'Alternative Text',
+    //                 },
+    //               ],
+    //             }),
+    //             defineField({
+    //               name: 'title',
+    //               type: 'string',
+    //               title: 'Title',
+    //             }),
+    //             defineField({
+    //               name: 'subtitle',
+    //               type: 'string',
+    //               title: 'SubTitle',
+    //             }),
+    //             defineField({
+    //               name: 'description',
+    //               type: 'text',
+    //               title: 'Event Description',
+    //             }),
+    //             defineField({
+    //               name: 'eventDate',
+    //               type: 'object',
+    //               title: 'Event Date',
+    //               fields: [
+    //                 defineField({
+    //                   name: 'name',
+    //                   type: 'string',
+    //                   title: 'Date Name',
+    //                 }),
+    //                 defineField({
+    //                   name: 'date',
+    //                   type: 'date',
+    //                   title: 'Date',
+    //                 }),
+    //               ],
+    //             }),
+    //             defineField({
+    //               name: 'eventTime',
+    //               type: 'object',
+    //               title: 'Event Time',
+    //               fields: [
+    //                 defineField({
+    //                   name: 'name',
+    //                   type: 'string',
+    //                   title: 'Time Name',
+    //                 }),
+    //                 defineField({
+    //                   name: 'time',
+    //                   type: 'string',
+    //                   title: 'Time',
+    //                 }),
+    //               ],
+    //             }),
+    //             defineField({
+    //               name: 'eventLocation',
+    //               type: 'object',
+    //               title: 'Event Location',
+    //               fields: [
+    //                 defineField({
+    //                   name: 'name',
+    //                   type: 'string',
+    //                   title: 'Location Name',
+    //                 }),
+    //                 defineField({
+    //                   name: 'location',
+    //                   type: 'string',
+    //                   title: 'Location',
+    //                 }),
+    //               ],
+    //             }),
+    //             defineField({
+    //               name: 'ctaButton',
+    //               type: 'object',
+    //               title: 'CTA Button',
+    //               fields: [
+    //                 defineField({
+    //                   name: 'text',
+    //                   type: 'string',
+    //                   title: 'Button Text',
+    //                 }),
+    //                 defineField({
+    //                   name: 'url',
+    //                   type: 'string',
+    //                   title: 'Button URL',
+    //                 }),
+    //               ],
+    //             }),
+    //           ],
+    //         },
+    //       ],
+    //     }),
+    //   ],
+    // }),
 
     // Hotel Info
     defineField({
@@ -793,7 +833,8 @@ export const hotelType = defineType({
           title: 'Fragen & Antworten (Nur Grand)',
           hidden: ({document}) => document?.hotelType !== 'grand',
 
-          description: 'Es sind 6 Fragen und Antworten vorgesehen. Wenn es mehr als 6 Fragen gibt, werden diese trotzdem auf der Webseite ausgegeben.',
+          description:
+            'Es sind 6 Fragen und Antworten vorgesehen. Wenn es mehr als 6 Fragen gibt, werden diese trotzdem auf der Webseite ausgegeben.',
           of: [
             {
               type: 'object',
@@ -828,34 +869,13 @@ export const hotelType = defineType({
           title: 'Headline',
         }),
         defineField({
-          name: 'amenities',
+          name: 'highlights',
           type: 'array',
-          title: 'Amenities List',
+          title: 'Highlights',
           of: [
             {
-              type: 'object',
-              fields: [
-                defineField({
-                  name: 'amenityText',
-                  type: 'string',
-                  title: 'Amenity Text',
-                }),
-                defineField({
-                  name: 'icon',
-                  type: 'image',
-                  title: 'Amenity Icon',
-                  options: {
-                    hotspot: true,
-                  },
-                  fields: [
-                    {
-                      name: 'alt',
-                      type: 'string',
-                      title: 'Alternative Text',
-                    },
-                  ],
-                }),
-              ],
+              type: 'reference',
+              to: [{type: 'highlights'}],
             },
           ],
         }),
