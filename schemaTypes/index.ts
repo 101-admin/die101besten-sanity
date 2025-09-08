@@ -64,6 +64,7 @@ import {allEventsType} from './pages/allEvents'
 import eventsHero from './componets/eventsHero'
 import eventsCollection from './componets/eventsCollection'
 import eventType from './collections/eventType'
+import highlights from './collections/highlights'
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     seoType,
@@ -130,5 +131,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     eventsHero,
     eventsCollection,
     eventType,
+    highlights,
   ],
 }
