@@ -307,31 +307,53 @@ export const hotelType = defineType({
           ],
         }),
         defineField({
-          name:"gallery",
-          type:"array",
-          title:"Image Gallery",
-          of:[
+          name: 'gallery',
+          type: 'array',
+          title: 'Image Gallery',
+          of: [
             {
-              type:"object",
-              fields:[
+              type: 'object',
+              fields: [
                 defineField({
-                  name:"image",
-                  type:"image",
-                  title:"Image",
-                  options:{
-                    hotspot:true
+                  name: 'image',
+                  type: 'image',
+                  title: 'Image',
+                  options: {
+                    hotspot: true,
                   },
-                  fields:[
+                  fields: [
                     defineField({
-                      name:"alt",
-                      type:"string",
-                      title:"Alternative Text",
-                    })
-                  ]
-                })
-              ]
-            }
-          ]
+                      name: 'alt',
+                      type: 'string',
+                      title: 'Alternative Text',
+                    }),
+                  ],
+                }),
+              ],
+              preview: {
+                select: {
+                  media: 'image', 
+                  title: 'image.alt', 
+                },
+              },
+            },
+          ],
+          validation: (Rule) =>
+            Rule.custom((images, context) => {
+              const doc = context.document
+              const count = Array.isArray(images) ? images.length : 0
+              if (doc?.hotelType === 'premium' && count > 10) {
+                return "Max 10 images allowed for 'premium' page type"
+              }
+              if (doc?.hotelType === 'exclusive' && count > 12) {
+                return "Max 12 images allowed for 'exclusive' page type"
+              }
+              if (doc?.hotelType === 'grand' && count > 16) {
+                return "Max 16 images allowed for 'grand' page type"
+              }
+
+              return true
+            }),
         }),
       ],
     }),
@@ -1008,7 +1030,7 @@ export const hotelType = defineType({
     select: {
       title: 'name',
       author: 'author.name',
-      media: 'mainImage',
+      media: 'image',
       language: 'language',
     },
     prepare(selection) {
