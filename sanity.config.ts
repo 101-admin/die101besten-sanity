@@ -183,12 +183,17 @@ export default defineConfig({
         }
       }) as DocumentLocationResolver,
       previewUrl: {
-        origin: process.env.SANITY_STUDIO_PREVIEW_ORIGIN,
+        origin: process.env.SANITY_STUDIO_PREVIEW_ORIGIN || "http://localhost:3000",
         preview: '/',
         previewMode: {
           enable: '/api/draft-mode/enable',
         },
       },
+        allowOrigins: [
+          process.env.SANITY_STUDIO_PREVIEW_ORIGIN || 'http://localhost:3000',
+          'http://localhost:3000', // For local development
+        ],
+      
     }),
     // Add internationalization support
     documentInternationalization({
