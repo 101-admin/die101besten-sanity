@@ -354,7 +354,7 @@ export default defineConfig({
       previewUrl: {
         origin:
           process.env.SANITY_STUDIO_PREVIEW_ORIGIN_DACH ||
-          'https://die101besten-frontend-ch-znm1.vercel.app/',
+          'https://die101besten-frontend-dach.vercel.app/',
         preview: '/',
         previewMode: {
           enable: '/api/draft-mode/enable',
