@@ -31,6 +31,8 @@ export default defineConfig({
     visionTool({defaultApiVersion: apiVersion}),
     // Presentation tool for Visual Editing / embedded preview
     presentationTool({
+      name: 'deutschland-preview',
+      title: 'Deutschland Preview',
       locate: ((params, context) => {
         // Locale-aware locations per document type
         const listenLocaleOnly = () =>
@@ -183,17 +185,345 @@ export default defineConfig({
         }
       }) as DocumentLocationResolver,
       previewUrl: {
-        origin: process.env.SANITY_STUDIO_PREVIEW_ORIGIN || "http://localhost:3000",
+        origin:
+          process.env.SANITY_STUDIO_PREVIEW_ORIGIN_DEUTSCHLAND ||
+          'https://die101besten-frontend-de.vercel.app',
+
         preview: '/',
         previewMode: {
           enable: '/api/draft-mode/enable',
         },
       },
-        allowOrigins: [
-          process.env.SANITY_STUDIO_PREVIEW_ORIGIN || 'http://localhost:3000',
-          'http://localhost:3000', // For local development
-        ],
-      
+    }),
+
+    // DACH Preview Tool
+    presentationTool({
+      name: 'dach-preview',
+      title: 'DACH Preview',
+      locate: ((params, context) => {
+        // Locale-aware locations per document type
+        const listenLocaleOnly = () =>
+          context.documentStore.listenQuery(
+            `*[_id == $id][0]{
+              "locale": coalesce(__i18n_lang, language, "en")
+            }`,
+            {id: params.id},
+            {perspective: 'drafts'},
+          )
+
+        const listenWithSlug = () =>
+          context.documentStore.listenQuery(
+            `*[_id == $id][0]{
+              "locale": coalesce(__i18n_lang, language, "en"),
+              "slug": slug.current
+            }`,
+            {id: params.id},
+            {perspective: 'drafts'},
+          )
+
+        switch (params.type) {
+          case 'home': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Homepage', href: `/${locale}`}],
+                }
+              }),
+            )
+          }
+          case 'blog': {
+            const doc$ = listenWithSlug()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                const slug = doc?.slug
+                if (!slug) return null
+                return {
+                  locations: [
+                    {title: 'Blog detail', href: `/${locale}/blogs/${slug}`},
+                    {title: 'Blogs', href: `/${locale}/blogs`},
+                  ],
+                }
+              }),
+            )
+          }
+          case 'allBlogs': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Blogs', href: `/${locale}/blogs`}],
+                }
+              }),
+            )
+          }
+          case 'event': {
+            const doc$ = listenWithSlug()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                const slug = doc?.slug
+                if (!slug) return null
+                return {
+                  locations: [
+                    {title: 'Event detail', href: `/${locale}/events/${slug}`},
+                    {title: 'Events', href: `/${locale}/events`},
+                  ],
+                }
+              }),
+            )
+          }
+          case 'allEvents': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Events', href: `/${locale}/events`}],
+                }
+              }),
+            )
+          }
+          case 'hotel': {
+            const doc$ = listenWithSlug()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                const slug = doc?.slug
+                if (!slug) return null
+                return {
+                  locations: [
+                    {title: 'Hotel detail', href: `/${locale}/hotels/${slug}`},
+                    {title: 'Hotels', href: `/${locale}/hotels`},
+                  ],
+                }
+              }),
+            )
+          }
+          case 'allHotels': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Hotels', href: `/${locale}/hotels`}],
+                }
+              }),
+            )
+          }
+          case 'aboutUs': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'About', href: `/${locale}/about`}],
+                }
+              }),
+            )
+          }
+          case 'partners': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Partners', href: `/${locale}/partners`}],
+                }
+              }),
+            )
+          }
+          case 'specialEditionHotels': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Special editions', href: `/${locale}/special-editions`}],
+                }
+              }),
+            )
+          }
+          default:
+            return null
+        }
+      }) as DocumentLocationResolver,
+      previewUrl: {
+        origin:
+          process.env.SANITY_STUDIO_PREVIEW_ORIGIN_DACH ||
+          'https://die101besten-frontend-ch-znm1.vercel.app/',
+        preview: '/',
+        previewMode: {
+          enable: '/api/draft-mode/enable',
+        },
+      },
+    }),
+    // Schweiz Preview Tool
+    presentationTool({
+      name: 'schweiz-preview',
+      title: 'Schweiz Preview',
+      locate: ((params, context) => {
+        // Locale-aware locations per document type
+        const listenLocaleOnly = () =>
+          context.documentStore.listenQuery(
+            `*[_id == $id][0]{
+              "locale": coalesce(__i18n_lang, language, "en")
+            }`,
+            {id: params.id},
+            {perspective: 'drafts'},
+          )
+
+        const listenWithSlug = () =>
+          context.documentStore.listenQuery(
+            `*[_id == $id][0]{
+              "locale": coalesce(__i18n_lang, language, "en"),
+              "slug": slug.current
+            }`,
+            {id: params.id},
+            {perspective: 'drafts'},
+          )
+
+        switch (params.type) {
+          case 'home': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Homepage', href: `/${locale}`}],
+                }
+              }),
+            )
+          }
+          case 'blog': {
+            const doc$ = listenWithSlug()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                const slug = doc?.slug
+                if (!slug) return null
+                return {
+                  locations: [
+                    {title: 'Blog detail', href: `/${locale}/blogs/${slug}`},
+                    {title: 'Blogs', href: `/${locale}/blogs`},
+                  ],
+                }
+              }),
+            )
+          }
+          case 'allBlogs': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Blogs', href: `/${locale}/blogs`}],
+                }
+              }),
+            )
+          }
+          case 'event': {
+            const doc$ = listenWithSlug()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                const slug = doc?.slug
+                if (!slug) return null
+                return {
+                  locations: [
+                    {title: 'Event detail', href: `/${locale}/events/${slug}`},
+                    {title: 'Events', href: `/${locale}/events`},
+                  ],
+                }
+              }),
+            )
+          }
+          case 'allEvents': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Events', href: `/${locale}/events`}],
+                }
+              }),
+            )
+          }
+          case 'hotel': {
+            const doc$ = listenWithSlug()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                const slug = doc?.slug
+                if (!slug) return null
+                return {
+                  locations: [
+                    {title: 'Hotel detail', href: `/${locale}/hotels/${slug}`},
+                    {title: 'Hotels', href: `/${locale}/hotels`},
+                  ],
+                }
+              }),
+            )
+          }
+          case 'allHotels': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Hotels', href: `/${locale}/hotels`}],
+                }
+              }),
+            )
+          }
+          case 'aboutUs': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'About', href: `/${locale}/about`}],
+                }
+              }),
+            )
+          }
+          case 'partners': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Partners', href: `/${locale}/partners`}],
+                }
+              }),
+            )
+          }
+          case 'specialEditionHotels': {
+            const doc$ = listenLocaleOnly()
+            return doc$.pipe(
+              map((doc) => {
+                const locale = doc?.locale || 'en'
+                return {
+                  locations: [{title: 'Special editions', href: `/${locale}/special-editions`}],
+                }
+              }),
+            )
+          }
+          default:
+            return null
+        }
+      }) as DocumentLocationResolver,
+      previewUrl: {
+        origin:
+          process.env.SANITY_STUDIO_PREVIEW_ORIGIN_SCHWEIZ || 'https://die101besten-frontend-ch.vercel.app',
+        preview: '/',
+        previewMode: {
+          enable: '/api/draft-mode/enable',
+        },
+      },
     }),
     // Add internationalization support
     documentInternationalization({
