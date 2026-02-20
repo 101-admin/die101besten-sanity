@@ -332,8 +332,8 @@ export const hotelType = defineType({
               ],
               preview: {
                 select: {
-                  media: 'image', 
-                  title: 'image.alt', 
+                  media: 'image',
+                  title: 'image.alt',
                 },
               },
             },
@@ -1003,6 +1003,13 @@ export const hotelType = defineType({
           ],
         }),
       ],
+    }),
+
+    defineField({
+      name: 'location',
+      type: 'geopoint',
+      title: 'Location',
+      group: 'content',
     }),
 
     defineField({
