@@ -15,6 +15,7 @@ import {apiVersion, dataset, projectId} from './env'
 import {schema} from './schemaTypes'
 import {structure} from './structure'
 import {languages} from './config/languages'
+import {googleMapsInput} from '@sanity/google-maps-input'
 
 export default defineConfig({
   basePath: '/studio',
@@ -23,6 +24,9 @@ export default defineConfig({
   // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
   plugins: [
+    googleMapsInput({
+      apiKey: process.env.SANITY_STUDIO_GOOGLE_MAPS_API_KEY as string,
+    }),
     structureTool({
       structure,
     }),
@@ -518,7 +522,8 @@ export default defineConfig({
       }) as DocumentLocationResolver,
       previewUrl: {
         origin:
-          process.env.SANITY_STUDIO_PREVIEW_ORIGIN_SCHWEIZ || 'https://die101besten-frontend-ch.vercel.app',
+          process.env.SANITY_STUDIO_PREVIEW_ORIGIN_SCHWEIZ ||
+          'https://die101besten-frontend-ch.vercel.app',
         preview: '/',
         previewMode: {
           enable: '/api/draft-mode/enable',
