@@ -1,0 +1,28 @@
+name: Sanity Studio Deploy
+
+on:
+  workflow_dispatch: {}  # allows manual "Run workflow" from GitHub UI
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'      
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: .     
+
+      - name: Sanity deploy
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+        run: npx sanity deploy --yes
+        working-directory: .      
