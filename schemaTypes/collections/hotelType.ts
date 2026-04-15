@@ -77,19 +77,20 @@ export const hotelType = defineType({
       },
     }),
 
-    defineField({
-      name: 'segment',
-      type: 'string',
-      title: 'Hotel Segment',
-      group: 'content',
-      options: {
-        list: [
-          {title: 'Leisure', value: 'leisure'},
-          {title: 'Business', value: 'business'},
-        ],
-        layout: 'dropdown',
-      },
-    }),
+    // defineField({
+    //   name: 'segment',
+    //   type: 'string',
+    //   title: 'Hotel Segment',
+    //   group: 'content',
+    //   options: {
+    //     list: [
+    //       {title: 'Leisure', value: 'leisure'},
+    //       {title: 'Business', value: 'business'},
+    //     ],
+    //     layout: 'dropdown',
+    //   },
+    // }),
+
     defineField({
       name: 'category',
       type: 'reference',
