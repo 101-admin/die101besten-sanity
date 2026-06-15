@@ -83,21 +83,6 @@ export const blockContentType = defineType({
 
     defineArrayMember({
       type: 'object',
-      name: 'coloredText',
-      title: 'Colored Text',
-      icon: HighlightIcon,
-      description: 'For colored text wrap in # symbol',
-      fields: [
-        {
-          name: 'text',
-          type: 'string',
-          title: 'Text',
-        },
-      ],
-    }),
-
-    defineArrayMember({
-      type: 'object',
       name: 'fullWidthImage',
       title: 'Full Width Image',
       fields: [
@@ -140,8 +125,9 @@ export const blockContentType = defineType({
           type: 'array',
           title: 'Anzeige Images',
           of: [
-            {
+            defineArrayMember({
               type: 'object',
+              name: 'anzeigeImageItem',
               fields: [
                 defineField({
                   name: 'image',
@@ -167,7 +153,7 @@ export const blockContentType = defineType({
                   ],
                 }),
               ],
-            },
+            }),
           ],
         }),
       ],
@@ -183,8 +169,9 @@ export const blockContentType = defineType({
           type: 'array',
           title: 'Content',
           of: [
-            {
+            defineArrayMember({
               type: 'object',
+              name: 'contentSectionItem',
               fields: [
                 defineField({
                   name: 'image',
@@ -218,7 +205,7 @@ export const blockContentType = defineType({
                   },
                 }),
               ],
-            },
+            }),
           ],
         }),
       ],
@@ -233,8 +220,9 @@ export const blockContentType = defineType({
           type: 'array',
           title: 'Descriptions',
           of: [
-            {
+            defineArrayMember({
               type: 'object',
+              name: 'blogDescriptionItem',
               fields: [
                 defineField({
                   name: 'description',
@@ -242,7 +230,7 @@ export const blockContentType = defineType({
                   title: 'Description',
                 }),
               ],
-            },
+            }),
           ],
           options: {
             layout: 'grid',
